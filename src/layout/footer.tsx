@@ -174,11 +174,11 @@ export default function Footer() {
 
               <div>
                 <h3 className="text-2xl font-extrabold tracking-tight" style={{ color: 'rgba(245,241,236,0.95)' }}>
-                  Qlinique
+                  Antharaganga Hospital
                   <span style={{ color: 'var(--primary)' }}>.</span>
                 </h3>
                 <p className="text-xs" style={{ color: 'rgba(245,241,236,0.60)' }}>
-                  Hospital & Diagnostic Center
+                  Charitable Rural Hospital
                 </p>
               </div>
             </div>

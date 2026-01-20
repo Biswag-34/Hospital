@@ -101,11 +101,11 @@ export default function Header() {
           className={[
             'font-extrabold tracking-tight',
             // Responsive font sizing
-            'text-lg sm:text-xl',
+            'text-xl sm:text-xl',
             scrolled ? 'text-[var(--text-heading)]' : 'text-white',
           ].join(' ')}
         >
-          Qlinique
+          Antharaganga Hospital 
           <span className={scrolled ? 'text-[var(--primary)]' : 'text-teal-200'}>.</span>
         </a>
 

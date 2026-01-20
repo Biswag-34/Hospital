@@ -170,10 +170,10 @@ export default function Contact() {
 
             <div className="relative">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--text-heading)]">
-                Contact Us
+                Join The Cause
               </h2>
               <p className="mt-3 text-sm sm:text-base text-[var(--text-muted)] max-w-xl">
-                Reach out for appointments, enquiries, or emergency guidance. Our team will respond promptly.
+                RRHCF invites further partnerships to complete this impactful project.
               </p>
 
               {/* Info chips */}
