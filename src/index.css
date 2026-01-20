@@ -1,0 +1,75 @@
+/* 1) Theme variables first */
+@import './styles/theme.css';
+
+/* 2) Tailwind v4 import */
+@import "tailwindcss";
+
+/* 3) Global base */
+html, body {
+  background-color: var(--bg-page);
+  color: var(--text-body);
+  color-scheme: light;
+  scroll-behavior: auto; /* Lenis handles smooth scrolling */
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Section helpers */
+.section {
+  background-color: var(--bg-page);
+}
+
+.section-alt {
+  background: linear-gradient(
+    180deg,
+    var(--bg-section),
+    var(--bg-soft)
+  );
+}
+
+/* Card base (tinted, non-white) */
+.card {
+  background: linear-gradient(
+    180deg,
+    var(--surface),
+    var(--surface-muted)
+  );
+  border: 1px solid var(--surface-border);
+  border-radius: 1.5rem;
+  box-shadow:
+    0 8px 28px rgba(47, 62, 52, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow:
+    0 16px 40px rgba(47, 62, 52, 0.1);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary);
+  color: #ffffff;
+  border-radius: 9999px;
+  box-shadow: 0 8px 20px rgba(156, 90, 60, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+/* Fallback if --primary-hover isn't defined yet */
+.btn-primary:hover {
+  background-color: var(--primary-hover, #8a4f35);
+  box-shadow: 0 12px 28px rgba(156, 90, 60, 0.35);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* Optional: nicer text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

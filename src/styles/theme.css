@@ -1,0 +1,27 @@
+:root {
+  /* Page & sections */
+  --bg-page: #f5f1ec;        /* warm sage mist */
+  --bg-section: #eee7df;     /* soft sage */
+  --bg-soft: #dfe6db;        /* muted sage layer */
+
+  /* Card surfaces (NO PURE WHITE) */
+  --surface: #faf6f1;        /* warm ivory */
+  --surface-muted: #efefe8;
+  --surface-border: #d6dbcf;
+
+  /* Brand colors */
+  --primary: #9c5a3c;        /* sage green */
+  --primary-soft: #d7e4da;
+  --primary-hover: #8a4e357b;
+
+  --secondary: #6b7c59;      /* warm sand / clay */
+  --accent: #8b5e3c;         /* earth brown */
+
+  /* Text */
+  --text-heading: #2f3e34;   /* deep moss */
+  --text-body: #4b5f52;      /* olive grey */
+  --text-muted: #6b7f72;
+
+  /* Dark */
+  --bg-dark: #1f2a24;
+}
