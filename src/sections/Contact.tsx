@@ -1,60 +1,41 @@
 import { useEffect, useMemo, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Mail, Phone, MapPin } from 'lucide-react'
+import {
+  Mail,
+  Phone,
+  MapPin,
+  HeartHandshake,
+  Users,
+  HandHeart,
+  Building2,
+  ArrowRight,
+} from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null)
-  const svgRef = useRef<SVGSVGElement>(null)
-  const formRef = useRef<HTMLDivElement>(null)
+  const involvedRef = useRef<HTMLDivElement>(null)
+  const contactRef = useRef<HTMLDivElement>(null)
 
-  const strokeDash = useMemo(() => ({ duration: 2.4 }), [])
+  const anim = useMemo(() => ({ duration: 0.85 }), [])
 
   useEffect(() => {
     if (!sectionRef.current) return
 
     const ctx = gsap.context(() => {
-      // SVG "draw" animation: animate all SVG geometry (path/circle/line)
-      const svg = svgRef.current
-      if (svg) {
-        const shapes = Array.from(
-          svg.querySelectorAll<SVGGeometryElement>('path, circle, line, polyline, rect')
-        )
-
-        shapes.forEach((el) => {
-          const len = el.getTotalLength?.()
-          if (!len || !Number.isFinite(len)) return
-          el.style.strokeDasharray = `${len}`
-          el.style.strokeDashoffset = `${len}`
-        })
-
-        gsap.to(shapes, {
-          strokeDashoffset: 0,
-          duration: strokeDash.duration,
-          ease: 'power2.out',
-          stagger: 0.05,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 75%',
-            toggleActions: 'play none none none',
-          },
-        })
-      }
-
-      // Form panel entrance + field stagger
-      const form = formRef.current
-      if (form) {
-        const items = form.querySelectorAll('.cu-anim')
+      const runPanel = (panel: HTMLDivElement | null) => {
+        if (!panel) return
+        const items = panel.querySelectorAll('.cu-anim')
 
         gsap.fromTo(
-          form,
+          panel,
           { y: 26, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.85,
+            duration: anim.duration,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: sectionRef.current,
@@ -66,11 +47,11 @@ export default function Contact() {
 
         gsap.fromTo(
           items,
-          { y: 18, opacity: 0 },
+          { y: 14, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.75,
+            duration: 0.65,
             ease: 'power3.out',
             stagger: 0.08,
             scrollTrigger: {
@@ -81,10 +62,13 @@ export default function Contact() {
           }
         )
       }
+
+      runPanel(contactRef.current)
+      runPanel(involvedRef.current)
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [strokeDash.duration])
+  }, [anim.duration])
 
   return (
     <section
@@ -92,22 +76,24 @@ export default function Contact() {
       id="contact"
       className="section relative overflow-hidden py-16 sm:py-20 lg:py-24"
     >
-      {/* Soft background washes (theme-based, not teal/blue) */}
+      {/* Soft background washes */}
       <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute -top-48 -left-48 h-[520px] w-[520px] rounded-full blur-3xl opacity-70"
-          style={{ background: 'rgba(156, 90, 60, 0.12)' }} /* primary */
+          style={{ background: 'rgba(156, 90, 60, 0.12)' }}
         />
         <div
           className="absolute -bottom-56 -right-56 h-[560px] w-[560px] rounded-full blur-3xl opacity-70"
-          style={{ background: 'rgba(107, 124, 89, 0.12)' }} /* secondary */
+          style={{ background: 'rgba(107, 124, 89, 0.12)' }}
         />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Make both columns same height on lg by stretching the row and removing the bottom SVG */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
-          {/* LEFT: Architectural + Indian jali/mandala lines */}
+          {/* LEFT: Contact details + CTA (NO bottom house design) */}
           <div
+            ref={contactRef}
             className="
               lg:col-span-7
               relative overflow-hidden
@@ -115,19 +101,18 @@ export default function Contact() {
               border border-[var(--surface-border)]
               bg-[var(--surface)]/70 backdrop-blur
               p-6 sm:p-8 lg:p-10
+              h-full
             "
           >
-            {/* Corner motif (static) */}
-            <div className="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-multiply">
+            {/* Corner motif (keep subtle) */}
+            <div className="pointer-events-none absolute inset-0 opacity-[0.14] mix-blend-multiply">
               <svg viewBox="0 0 800 520" className="h-full w-full" fill="none">
-                {/* thin border frame */}
                 <path
                   d="M60 80H740M60 440H740M80 60V460M720 60V460"
                   stroke="var(--secondary)"
                   strokeWidth="2"
                   opacity="0.35"
                 />
-                {/* jali grid */}
                 {Array.from({ length: 11 }).map((_, i) => {
                   const x = 120 + i * 52
                   return (
@@ -152,7 +137,6 @@ export default function Contact() {
                     />
                   )
                 })}
-                {/* mandala arcs */}
                 <path
                   d="M220 140C310 70 490 70 580 140"
                   stroke="var(--primary)"
@@ -168,120 +152,89 @@ export default function Contact() {
               </svg>
             </div>
 
-            <div className="relative">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--text-heading)]">
-                Join The Cause
-              </h2>
-              <p className="mt-3 text-sm sm:text-base text-[var(--text-muted)] max-w-xl">
-                RRHCF invites further partnerships to complete this impactful project.
+            <div className="relative flex h-full flex-col">
+              <p className="cu-anim text-xs font-bold tracking-widest text-[var(--text-muted)]">
+                CONTACT US
               </p>
 
-              {/* Info chips */}
-              <div className="mt-7 sm:mt-8 grid gap-4 sm:grid-cols-2">
-                <div className="flex items-start gap-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] px-4 py-4 shadow-sm">
-                  <Phone className="mt-0.5" size={18} style={{ color: 'var(--primary)' }} />
-                  <div>
-                    <p className="text-sm font-semibold text-[var(--text-heading)]">Call</p>
-                    <p className="text-sm text-[var(--text-muted)]">+91 98765 43210</p>
+              <h2 className="cu-anim mt-3 text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--text-heading)] leading-tight">
+                Antharagange Rural Hospital &amp; Research Center
+              </h2>
+
+              {/* Contact info as structured blocks */}
+              <div className="cu-anim mt-6 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl border border-[var(--surface-border)] bg-white/40 p-4">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="mt-0.5" size={18} style={{ color: 'var(--primary)' }} />
+                    <div>
+                      <p className="text-sm font-semibold text-[var(--text-heading)]">Address</p>
+                      <p className="mt-1 text-sm text-[var(--text-muted)]">
+                        Antharagange, Kolar District, Karnataka
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] px-4 py-4 shadow-sm">
-                  <Mail className="mt-0.5" size={18} style={{ color: 'var(--primary)' }} />
-                  <div>
-                    <p className="text-sm font-semibold text-[var(--text-heading)]">Email</p>
-                    <p className="text-sm text-[var(--text-muted)]">contact@qlinique.com</p>
+                <div className="rounded-2xl border border-[var(--surface-border)] bg-white/40 p-4">
+                  <div className="flex items-start gap-3">
+                    <Phone className="mt-0.5" size={18} style={{ color: 'var(--primary)' }} />
+                    <div>
+                      <p className="text-sm font-semibold text-[var(--text-heading)]">Phone</p>
+                      <p className="mt-1 text-sm text-[var(--text-muted)]">+91 98765 43210</p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="sm:col-span-2 flex items-start gap-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] px-4 py-4 shadow-sm">
-                  <MapPin className="mt-0.5" size={18} style={{ color: 'var(--primary)' }} />
-                  <div>
-                    <p className="text-sm font-semibold text-[var(--text-heading)]">Visit</p>
-                    <p className="text-sm text-[var(--text-muted)]">
-                      123 Healthcare Avenue, Wellness City, India
-                    </p>
+                <div className="sm:col-span-2 rounded-2xl border border-[var(--surface-border)] bg-white/40 p-4">
+                  <div className="flex items-start gap-3">
+                    <Mail className="mt-0.5" size={18} style={{ color: 'var(--primary)' }} />
+                    <div>
+                      <p className="text-sm font-semibold text-[var(--text-heading)]">Email</p>
+                      <p className="mt-1 text-sm text-[var(--text-muted)]">contact@qlinique.com</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* SVG drawing area */}
-              <div className="mt-8 sm:mt-10 relative">
-                <div
-                  className="absolute inset-0 rounded-3xl"
-                  style={{
-                    background:
-                      'linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0))',
-                  }}
-                />
+              <p className="cu-anim mt-5 text-sm sm:text-base font-semibold text-[var(--text-heading)]">
+                Healing rural lives with compassion, dignity, and purpose.
+              </p>
 
-                <svg
-                  ref={svgRef}
-                  viewBox="0 0 900 420"
-                  className="relative w-full h-[240px] sm:h-[280px] md:h-[320px]"
-                  fill="none"
+              {/* CTA row pinned near bottom for consistent height */}
+              <div className="cu-anim mt-auto pt-6 flex flex-col sm:flex-row gap-3">
+                <a
+                  href="mailto:contact@qlinique.com"
+                  className="btn-primary inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold shadow-sm active:scale-[0.98]"
                 >
-                  {/* Blueprint + Indian architectural feel: frame + arches + plinth + jali */}
-                  <path d="M70 335 L70 170 L215 85 L370 170 L370 335" stroke="var(--text-heading)" strokeWidth="2.8" opacity="0.55" />
-                  <path d="M370 335 L370 150 L545 60 L730 150 L730 335" stroke="var(--text-heading)" strokeWidth="2.8" opacity="0.55" />
-                  <path d="M70 335 L730 335" stroke="var(--text-heading)" strokeWidth="3.0" opacity="0.55" />
-
-                  {/* vertical pillars (theme accents) */}
-                  <path d="M215 85 L215 335" stroke="var(--primary)" strokeWidth="3.0" opacity="0.55" />
-                  <path d="M545 60 L545 335" stroke="var(--secondary)" strokeWidth="3.0" opacity="0.50" />
-
-                  {/* arch details */}
-                  <path d="M130 205 C170 155, 270 155, 310 205" stroke="var(--primary)" strokeWidth="2.6" opacity="0.35" />
-                  <path d="M430 200 C490 140, 610 140, 670 200" stroke="var(--secondary)" strokeWidth="2.6" opacity="0.33" />
-
-                  {/* window/jali lines */}
-                  <path d="M135 240 H305" stroke="var(--text-heading)" strokeWidth="2.2" opacity="0.28" />
-                  <path d="M135 272 H305" stroke="var(--text-heading)" strokeWidth="2.2" opacity="0.28" />
-                  <path d="M425 232 H635" stroke="var(--text-heading)" strokeWidth="2.2" opacity="0.28" />
-                  <path d="M425 265 H635" stroke="var(--text-heading)" strokeWidth="2.2" opacity="0.28" />
-
-                  {/* jali micro-grid */}
-                  {Array.from({ length: 8 }).map((_, i) => {
-                    const x = 450 + i * 22
-                    return (
-                      <path
-                        key={`jg-v-${i}`}
-                        d={`M${x} 225V275`}
-                        stroke="var(--secondary)"
-                        strokeWidth="1.6"
-                        opacity="0.10"
-                      />
-                    )
-                  })}
-                  {Array.from({ length: 3 }).map((_, i) => {
-                    const y = 238 + i * 18
-                    return (
-                      <path
-                        key={`jg-h-${i}`}
-                        d={`M440 ${y}H640`}
-                        stroke="var(--primary)"
-                        strokeWidth="1.6"
-                        opacity="0.09"
-                      />
-                    )
-                  })}
-
-                  {/* curved accent line (ground/wave) */}
-                  <path
-                    d="M85 360 C220 305, 365 305, 520 360 C650 405, 780 405, 860 360"
-                    stroke="var(--primary)"
-                    strokeWidth="2.8"
-                    opacity="0.28"
-                  />
-                </svg>
+                  <Mail size={18} />
+                  Email Us
+                </a>
+                <a
+                  href="tel:+919876543210"
+                  className="
+                    inline-flex items-center justify-center gap-2
+                    rounded-2xl
+                    border border-[var(--surface-border)]
+                    bg-white/50
+                    px-6 py-3
+                    font-semibold
+                    text-[var(--text-heading)]
+                    transition
+                    hover:bg-white/70
+                    active:scale-[0.98]
+                  "
+                >
+                  <Phone size={18} />
+                  Call Now
+                </a>
               </div>
             </div>
           </div>
 
-          {/* RIGHT: Form panel (≈45% on lg) */}
+          {/* RIGHT: GET INVOLVED (stronger structure + style) */}
           <div className="lg:col-span-5">
             <div
-              ref={formRef}
+              ref={involvedRef}
               className="
                 h-full
                 rounded-3xl
@@ -289,112 +242,138 @@ export default function Contact() {
                 bg-[var(--surface)]
                 shadow-lg
                 p-6 sm:p-8 lg:p-10
+                relative overflow-hidden
               "
             >
-              <h3 className="cu-anim text-lg sm:text-xl font-extrabold text-[var(--text-heading)]">
-                Send a Message
-              </h3>
-              <p className="cu-anim mt-2 text-sm text-[var(--text-muted)]">
-                Fill out the form and we will get back to you within 24 hours.
-              </p>
+              {/* Premium soft overlay */}
+              <div
+                className="pointer-events-none absolute inset-0 opacity-60"
+                style={{
+                  background:
+                    'radial-gradient(700px 260px at 20% 0%, rgba(156, 90, 60, 0.12), transparent 60%), radial-gradient(700px 300px at 100% 35%, rgba(107, 124, 89, 0.12), transparent 55%)',
+                }}
+              />
 
-              <form className="mt-6 grid gap-4">
-                <div className="cu-anim">
-                  <label className="text-sm font-semibold text-[var(--text-heading)]">Full Name</label>
-                  <input
-                    type="text"
-                    placeholder="Your name"
-                    className="
-                      mt-2 w-full rounded-2xl
-                      border border-[var(--surface-border)]
-                      bg-white/40
-                      px-4 py-3
-                      text-[var(--text-heading)]
-                      outline-none transition
-                      focus:ring-4
-                    "
-                    style={{
-                      boxShadow: 'none',
-                    }}
-                  />
+              <div className="relative flex h-full flex-col">
+                <div className="cu-anim inline-flex w-fit items-center gap-2 rounded-full border border-[var(--surface-border)] bg-white/45 px-3 py-1">
+                  <HeartHandshake size={14} style={{ color: 'var(--primary)' }} />
+                  <span className="text-xs font-bold tracking-widest text-[var(--text-muted)]">
+                    GET INVOLVED
+                  </span>
                 </div>
 
-                <div className="cu-anim">
-                  <label className="text-sm font-semibold text-[var(--text-heading)]">Email</label>
-                  <input
-                    type="email"
-                    placeholder="you@example.com"
-                    className="
-                      mt-2 w-full rounded-2xl
-                      border border-[var(--surface-border)]
-                      bg-white/40
-                      px-4 py-3
-                      text-[var(--text-heading)]
-                      outline-none transition
-                      focus:ring-4
-                    "
-                  />
+                <h3 className="cu-anim mt-4 text-xl sm:text-2xl font-extrabold text-[var(--text-heading)]">
+                  We welcome
+                </h3>
+
+                {/* Structured list with bullets + icons + hover */}
+                <div className="mt-6 grid gap-3">
+                  <div className="cu-anim group rounded-2xl border border-[var(--surface-border)] bg-white/45 p-4 transition hover:bg-white/60">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] p-2">
+                        <Building2 size={18} style={{ color: 'var(--primary)' }} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm sm:text-base font-semibold text-[var(--text-heading)]">
+                          CSR and institutional partnerships
+                        </p>
+                        <p className="mt-1 text-xs sm:text-sm text-[var(--text-muted)]">
+                          Support programs and infrastructure for rural care.
+                        </p>
+                      </div>
+                      <ArrowRight
+                        className="ml-auto mt-1 opacity-0 transition group-hover:opacity-60"
+                        size={18}
+                        style={{ color: 'var(--text-muted)' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="cu-anim group rounded-2xl border border-[var(--surface-border)] bg-white/45 p-4 transition hover:bg-white/60">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] p-2">
+                        <Users size={18} style={{ color: 'var(--primary)' }} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm sm:text-base font-semibold text-[var(--text-heading)]">
+                          Healthcare and academic collaborations
+                        </p>
+                        <p className="mt-1 text-xs sm:text-sm text-[var(--text-muted)]">
+                          Partner in training, research, and outreach.
+                        </p>
+                      </div>
+                      <ArrowRight
+                        className="ml-auto mt-1 opacity-0 transition group-hover:opacity-60"
+                        size={18}
+                        style={{ color: 'var(--text-muted)' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="cu-anim group rounded-2xl border border-[var(--surface-border)] bg-white/45 p-4 transition hover:bg-white/60">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] p-2">
+                        <HandHeart size={18} style={{ color: 'var(--primary)' }} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm sm:text-base font-semibold text-[var(--text-heading)]">
+                          Volunteers and medical professionals
+                        </p>
+                        <p className="mt-1 text-xs sm:text-sm text-[var(--text-muted)]">
+                          Contribute time, skills, and care to serve communities.
+                        </p>
+                      </div>
+                      <ArrowRight
+                        className="ml-auto mt-1 opacity-0 transition group-hover:opacity-60"
+                        size={18}
+                        style={{ color: 'var(--text-muted)' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="cu-anim group rounded-2xl border border-[var(--surface-border)] bg-white/45 p-4 transition hover:bg-white/60">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] p-2">
+                        <HeartHandshake size={18} style={{ color: 'var(--primary)' }} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm sm:text-base font-semibold text-[var(--text-heading)]">
+                          Donors who believe in equitable rural healthcare
+                        </p>
+                        <p className="mt-1 text-xs sm:text-sm text-[var(--text-muted)]">
+                          Help sustain compassionate, dignified rural treatment.
+                        </p>
+                      </div>
+                      <ArrowRight
+                        className="ml-auto mt-1 opacity-0 transition group-hover:opacity-60"
+                        size={18}
+                        style={{ color: 'var(--text-muted)' }}
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                <div className="cu-anim">
-                  <label className="text-sm font-semibold text-[var(--text-heading)]">Phone</label>
-                  <input
-                    type="tel"
-                    placeholder="+91 XXXXX XXXXX"
-                    className="
-                      mt-2 w-full rounded-2xl
-                      border border-[var(--surface-border)]
-                      bg-white/40
-                      px-4 py-3
-                      text-[var(--text-heading)]
-                      outline-none transition
-                      focus:ring-4
-                    "
-                  />
+                {/* Closing line pinned bottom (no extra whitespace look) */}
+                <div className="cu-anim mt-auto pt-6">
+                  <div className="rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] px-5 py-4">
+                    <p className="text-sm sm:text-base font-semibold text-[var(--text-heading)]">
+                      Together, we can create lasting impact in rural health.
+                    </p>
+                  </div>
                 </div>
-
-                <div className="cu-anim">
-                  <label className="text-sm font-semibold text-[var(--text-heading)]">Message</label>
-                  <textarea
-                    rows={5}
-                    placeholder="How can we help?"
-                    className="
-                      mt-2 w-full rounded-2xl
-                      border border-[var(--surface-border)]
-                      bg-white/40
-                      px-4 py-3
-                      text-[var(--text-heading)]
-                      outline-none transition
-                      focus:ring-4
-                      resize-none
-                    "
-                  />
-                </div>
-
-                <button
-                  type="button"
-                  className="cu-anim btn-primary mt-2 inline-flex justify-center px-6 py-3 font-semibold shadow-sm active:scale-[0.98]"
-                >
-                  Submit
-                </button>
-
-                <p className="cu-anim text-xs text-[var(--text-muted)] text-center mt-2">
-                  By submitting, you agree to be contacted by our team.
-                </p>
-              </form>
-
-              {/* Focus ring color (theme primary) */}
-              <style>{`
-                #contact input:focus,
-                #contact textarea:focus {
-                  border-color: var(--primary);
-                  box-shadow: 0 0 0 4px rgba(156, 90, 60, 0.16);
-                }
-              `}</style>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <style>{`
+        #contact a:focus-visible {
+          outline: none;
+          box-shadow: 0 0 0 4px rgba(156, 90, 60, 0.16);
+          border-radius: 18px;
+        }
+      `}</style>
     </section>
   )
 }

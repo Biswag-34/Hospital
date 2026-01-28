@@ -37,10 +37,10 @@ export default function Doctors() {
         <div className="flex items-end justify-between gap-6 mb-8 sm:mb-10">
           <div className="max-w-2xl">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--text-heading)]">
-              Our Team
+              Our Leadership
             </h2>
             <p className="mt-2 text-sm sm:text-base text-[var(--text-muted)]">
-             We are constantly involve ourselves to reach our mission of providing the best healthcare services to our community.
+             Raghavendra Shri Sai Rural Healthcare Foundation, A non-profit organization with over a decade of experience in rural healthcare, committed to ethical care, accessibility, and long-term community health outcomes.
             </p>
           </div>
 

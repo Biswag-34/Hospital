@@ -29,8 +29,8 @@ gsap.registerPlugin(ScrollTrigger)
 const keyBadges = [
   {
     icon: <Landmark size={18} className="text-[var(--secondary)]" />,
-    title: 'Government Subsidized Model',
-    desc: 'Built to reduce rural healthcare burden through subsidized services.',
+    title: 'A Non-Profit, Charitable Venture',
+    desc: 'The hospital stands as a long-term promise to rural families, persons with disabilities, and economically vulnerable communities.',
   },
   {
     icon: <Accessibility size={18} className="text-[var(--primary)]" />,
@@ -40,7 +40,7 @@ const keyBadges = [
   {
     icon: <BadgeIndianRupee size={18} className="text-[var(--accent)]" />,
     title: 'Affordable Care for Everyone',
-    desc: 'Low-cost consultations and services for all rural families.',
+    desc: 'A partnered initiative of Raghavendra Shri Sai Rural Healthcare Foundation & Antaragange Vidya Samste',
   },
 ]
 
@@ -48,7 +48,7 @@ const pillars = [
   {
     icon: <HeartHandshake size={18} className="text-[var(--primary)]" />,
     title: 'Charitable, Rural-First Care',
-    desc: 'Affordable, accessible healthcare designed for rural communities.',
+    desc: 'Antharagange Rural Hospital & Research Center was established with a singular purpose: to bridge the healthcare gap in rural and disabled communities.',
   },
   {
     icon: <Accessibility size={18} className="text-[var(--primary)]" />,
@@ -58,22 +58,22 @@ const pillars = [
   {
     icon: <Users size={18} className="text-[var(--primary)]" />,
     title: 'Community Outreach Backbone',
-    desc: 'Screening camps, early intervention, and village-level follow-up.',
+    desc: 'Located in the rural heart of Kolar district, the hospital is designed not merely as a treatment facility, but as a community-centered healthcare ecosystem—where care, rehabilitation, prevention, and research work together.',
   },
 ]
 
 const clinicalFoundation = [
-  { icon: <Stethoscope size={18} className="text-[var(--secondary)]" />, label: 'General Medicine' },
-  { icon: <Syringe size={18} className="text-[var(--secondary)]" />, label: 'Pediatrics & Immunization' },
-  { icon: <ShieldPlus size={18} className="text-[var(--secondary)]" />, label: 'Emergency Stabilization' },
-  { icon: <Microscope size={18} className="text-[var(--secondary)]" />, label: 'Lab, X-ray, Ultrasound' },
+  { icon: <Stethoscope size={18} className="text-[var(--secondary)]" />, label: 'Outpatient (OPD) and inpatient (IPD) services' },
+  { icon: <Syringe size={18} className="text-[var(--secondary)]" />, label: 'Wound care and limb salvage programs' },
+  { icon: <ShieldPlus size={18} className="text-[var(--secondary)]" />, label: 'Preventive health check-ups' },
+  { icon: <Microscope size={18} className="text-[var(--secondary)]" />, label: 'Mother and child health services' },
 ]
 
 const disabilityCore = [
-  { icon: <Brain size={18} className="text-[var(--primary)]" />, label: 'Child Development & Psychiatry' },
-  { icon: <Activity size={18} className="text-[var(--primary)]" />, label: 'Physiotherapy, OT, Speech Therapy' },
-  { icon: <Accessibility size={18} className="text-[var(--primary)]" />, label: 'Orthotics / Prosthetics Support' },
-  { icon: <HeartHandshake size={18} className="text-[var(--primary)]" />, label: 'Family Counseling & Rehab Plans' },
+  { icon: <Brain size={18} className="text-[var(--primary)]" />, label: 'Mental health services, including counseling and community psychiatry support' },
+  { icon: <Activity size={18} className="text-[var(--primary)]" />, label: 'Disability rehabilitation and physiotherapy' },
+  { icon: <Accessibility size={18} className="text-[var(--primary)]" />, label: 'Mother and child health services' },
+  { icon: <HeartHandshake size={18} className="text-[var(--primary)]" />, label: 'Chronic disease management' },
 ]
 
 const timeline = [
@@ -110,10 +110,11 @@ const timeline = [
 ]
 
 const outreachItems = [
-  'Monthly village disability screening camps',
-  'School screening for developmental delay',
-  'Home-based rehab support for severe cases',
-  'Referral pathways for higher medical assistance',
+  'Mobile medical units',
+  'Free rural and disability-focused health camps',
+  'School health screening programs',
+  'Training programs for rural healthcare workers',
+  'Awareness initiatives on diabetes, wound care, hygiene, and prevention',
 ]
 
 /** ---------------------------
@@ -206,12 +207,11 @@ export default function About() {
           </p>
 
           <h2 className="mt-4 text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--text-heading)] tracking-tight">
-            Government subsidized rural healthcare that restores dignity, function, and hope.
+            A charitable healthcare institution dedicated to rural and disabled communities
           </h2>
 
           <p className="mt-4 text-[var(--text-body)] leading-relaxed">
-            This hospital is designed as a government-subsidized, rural-first initiative: free check-ups for disabled people,
-            and low-cost services for everyone else, ensuring quality healthcare is accessible without financial burden.
+            <span className='text-green-500 text-xl'>Antharagange</span> Rural Hospital & Research Center is a first-of-its-kind rural healthcare and research initiative, committed to delivering accessible, affordable, and compassionate medical care to underserved populations.
           </p>
         </div>
 
@@ -263,8 +263,7 @@ export default function About() {
             </div>
 
             <p className="mt-4 text-[var(--text-body)] leading-relaxed">
-              To ensure that no rural child, adult, or elderly person lives with preventable disability, untreated mental illness,
-              or lack of basic healthcare due to poverty or distance.
+              To build a sustainable rural hospital that ensures dignified, ethical, and high-quality healthcare for every individual—irrespective of geography, physical ability, or financial status.
             </p>
 
             <div className="mt-5 flex items-center gap-2 text-sm text-[var(--text-body)]">
@@ -283,9 +282,11 @@ export default function About() {
 
             <ul className="mt-4 space-y-3 text-sm text-[var(--text-body)]">
               {[
-                'Provide free or highly subsidized comprehensive healthcare to rural populations.',
-                'Deliver early identification, treatment, correction, and long-term rehabilitation for disabilities.',
-                'Integrate medical care, surgery, therapy, rehabilitation, social support, and livelihood linkage.',
+                'Provide affordable and subsidized healthcare to rural and disabled populations',
+                'Address healthcare inequity through charitable service models',
+                'Integrate treatment, rehabilitation, prevention, and research',
+                'Strengthen rural healthcare through training and capacity building',
+                'Develop a replicable rural hospital model for underserved regions',
               ].map((x) => (
                 <li key={x} className="flex gap-2">
                   <span className="mt-2 h-2 w-2 rounded-full bg-[var(--primary)]" />
@@ -301,25 +302,26 @@ export default function About() {
           {/* Left: Care Model (dark card) */}
           <div className="ab-reveal lg:col-span-5 rounded-3xl bg-[var(--bg-dark)] text-white p-8 overflow-hidden relative">
             <div className="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-white/10 blur-2xl" />
-            <h3 className="text-xl sm:text-2xl font-extrabold">Care Model</h3>
-            <p className="mt-3 text-white/80 text-sm leading-relaxed">
-              A general rural hospital foundation that builds trust and continuity, combined with a dedicated disability care core.
-              Free check-ups for disabled people, and subsidized care for others.
-            </p>
-
+            <h3 className="text-xl sm:text-2xl font-extrabold">WHAT MAKE US UNIQUE</h3>
             <div className="mt-6 grid gap-3">
               <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                <p className="text-sm font-semibold">Foundation Layer</p>
-                <p className="text-xs text-white/70 mt-1">
-                  OPD/IPD + essential diagnostics + emergency stabilization.
-                </p>
+                <p className="text-sm font-semibold">A First-of-Its-Kind Rural Healthcare Model</p>
               </div>
 
               <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                <p className="text-sm font-semibold">Core Identity</p>
-                <p className="text-xs text-white/70 mt-1">
-                  Mental health + disability correction + long-term rehabilitation.
-                </p>
+                <p className="text-sm font-semibold">Socially driven, non-profit healthcare institution focused on long-term community impact</p>
+              </div>
+              <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <p className="text-sm font-semibold">Charitable and non-profit driven</p>
+              </div>
+              <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <p className="text-sm font-semibold">Designed for rural-specific health challenges</p>
+              </div>
+              <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <p className="text-sm font-semibold">Integrated rehabilitation and research model</p>
+              </div>
+              <div className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                <p className="text-sm font-semibold">Continuity of care rather than episodic treatment</p>
               </div>
             </div>
           </div>
@@ -446,7 +448,7 @@ export default function About() {
           <div className="ab-reveal lg:col-span-5 rounded-3xl bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-white p-8 shadow-lg">
             <h3 className="text-2xl font-extrabold">Need help or want to support?</h3>
             <p className="mt-3 text-white/85 text-sm leading-relaxed">
-              This is a government-subsidized rural health initiative: free check-ups for disabled people and affordable care for all.
+             <span className="font-bold">Raghavendra Shri Sai Rural Healthcare Foundation</span>, A non-profit organization with over a decade of experience in rural healthcare, committed to ethical care, accessibility, and long-term community health outcomes.
             </p>
 
             <div className="mt-6 grid gap-3">

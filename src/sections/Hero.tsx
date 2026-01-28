@@ -55,18 +55,10 @@ export default function Hero() {
           ].join(' ')}
         >
           <div className="max-w-xl lg:max-w-2xl">
-            <h1
-              className={[
-                'font-extrabold tracking-tight',
-                'text-2xl sm:text-3xl md:text-4xl xl:text-5xl',
-                'leading-tight',
-              ].join(' ')}
-            >
-              Transforming Healthcare Access for
-              <span className="block text-teal-300">
-               Disabled and Rural People
-              </span>
-            </h1>
+          <h1 className="font-extrabold tracking-tight text-2xl sm:text-3xl md:text-4xl xl:text-5xl leading-tight">
+  Healing Closer to
+  <span className="block sm:inline text-teal-300"> Home</span>
+</h1>
 
             <p
               className={[
@@ -76,8 +68,7 @@ export default function Hero() {
                 'leading-relaxed',
               ].join(' ')}
             >
-              Our mission is to bring quality health infrastructure and skill full
-              medical functionaries to the door step of rural and underdeveloped urban areas.
+              A charitable Healthcare Institution dedicated to <span className="text-teal-300">Rural</span> and <span className="text-teal-300">Disabled</span> communities.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -97,7 +88,7 @@ export default function Hero() {
                   'transition active:scale-[0.98]',
                 ].join(' ')}
               >
-                Book Appointment
+               Join the Cause
               </a>
 
               <a
