@@ -1,27 +1,44 @@
 :root {
-  /* Page & sections */
-  --bg-page: #f5f1ec;        /* warm sage mist */
-  --bg-section: #eee7df;     /* soft sage */
-  --bg-soft: #dfe6db;        /* muted sage layer */
+  /* =========================================================
+     Page & sections – Deeper cream (less “white”)
+     ========================================================= */
+  --bg-page: #efe6dc;        /* warm parchment cream */
+  --bg-section: #e8ddd2;     /* section cream (slightly deeper) */
+  --bg-soft: #dfd2c5;        /* subtle layer for separators */
 
-  /* Card surfaces (NO PURE WHITE) */
-  --surface: #faf6f1;        /* warm ivory */
-  --surface-muted: #efefe8;
-  --surface-border: #d6dbcf;
+  /* =========================================================
+     Card surfaces – Soft “paper” ivory, clearly separated
+     ========================================================= */
+  --surface: #f4ece3;        /* card surface (not white) */
+  --surface-muted: #eadfd4;  /* muted surface panels */
+  --surface-border: rgba(112, 58, 70, 0.16); /* clearer border */
 
-  /* Brand colors */
-  --primary: #9c5a3c;        /* sage green */
-  --primary-soft: #d7e4da;
-  --primary-hover: #8a4e357b;
+  /* =========================================================
+     Brand – Calm maroon (still muted, slightly deeper)
+     ========================================================= */
+  --primary: #6f3340;        /* calm maroon */
+  --primary-soft: rgba(111, 51, 64, 0.12);
+  --primary-hover: rgba(111, 51, 64, 0.88);
 
-  --secondary: #6b7c59;      /* warm sand / clay */
-  --accent: #8b5e3c;         /* earth brown */
+  --secondary: #87515d;      /* rose-maroon */
+  --accent: #a77a81;         /* blush accent */
 
-  /* Text */
-  --text-heading: #2f3e34;   /* deep moss */
-  --text-body: #4b5f52;      /* olive grey */
-  --text-muted: #6b7f72;
+  /* =========================================================
+     Text – Warm charcoal (readable but not harsh)
+     ========================================================= */
+  --text-heading: #2f2326;   /* warm charcoal */
+  --text-body: #4a373c;      /* comfortable reading */
+  --text-muted: rgba(74, 55, 60, 0.72);
 
-  /* Dark */
-  --bg-dark: #1f2a24;
+  /* =========================================================
+     Dark sections – Deep warm maroon-brown
+     ========================================================= */
+  --bg-dark: #1f1114;
+
+  /* =========================================================
+     Effects – Slightly stronger separation (still soft)
+     ========================================================= */
+  --shadow-soft: 0 10px 28px rgba(111, 51, 64, 0.12);
+  --shadow-strong: 0 18px 48px rgba(111, 51, 64, 0.20);
+  --ring: 0 0 0 3px rgba(111, 51, 64, 0.18);
 }
