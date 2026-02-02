@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const navItems = [
   { label: 'Home', href: '#home' },
@@ -10,7 +11,7 @@ const navItems = [
 ]
 
 interface LenisInstance {
-  scrollTo: (target: string, options?: { offset?: number }) => void
+  scrollTo: (target: number | string | HTMLElement, options?: { offset?: number }) => void
 }
 
 export default function Header() {
@@ -20,8 +21,13 @@ export default function Header() {
 
   const lenisRef = useRef<LenisInstance | null>(null)
 
+  // ✅ React Router
+  const location = useLocation()
+  const navigate = useNavigate()
+  const isHome = location.pathname === '/'
+
   useEffect(() => {
-    lenisRef.current = (window as unknown as Record<string, LenisInstance>).lenis ?? null
+    lenisRef.current = (window as unknown as { lenis?: LenisInstance }).lenis ?? null
   }, [])
 
   useEffect(() => {
@@ -41,10 +47,8 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, target: string) => {
-    e.preventDefault()
-    setOpen(false)
-
+  // ✅ smooth scroll helper
+  const smoothScrollTo = (target: string) => {
     const lenis = lenisRef.current
     if (lenis?.scrollTo) {
       lenis.scrollTo(target, { offset: -84 })
@@ -55,137 +59,106 @@ export default function Header() {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  /**
-   * VISIBILITY FIX:
-   * Scrolled header must be MORE DISTINCT than page background.
-   * Use --bg-section / --surface-muted (darker cream) + maroon-tinted top gradient + stronger shadow.
-   */
-  const headerBase = scrolled
-    ? [
-        'backdrop-blur-xl',
-        // darker cream than bg-page so header is visible
-        'bg-[var(--bg-section)]/95',
-        // subtle maroon tint overlay (helps separation even on cream pages)
-        'bg-[linear-gradient(to_bottom,rgba(122,63,76,0.10),rgba(122,63,76,0.00))]',
-        // stronger border line
-        'border-b border-[var(--surface-border)]',
-        // stronger shadow (still soft)
-        'shadow-[0_12px_34px_rgba(122,63,76,0.14)]',
-      ].join(' ')
-    : 'bg-transparent'
+  // ✅ MAIN NAV LOGIC
+  const handleNav = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    target: string
+  ) => {
+    e.preventDefault()
+    setOpen(false)
 
-  // Brand & links
-  const brandText = scrolled
-    ? 'text-[var(--text-heading)]'
-    : 'text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.40)]'
+    // HOME
+    if (target === '#home') {
+      if (isHome) {
+        const lenis = lenisRef.current
+        if (lenis?.scrollTo) lenis.scrollTo(0)
+        else window.scrollTo({ top: 0, behavior: 'smooth' })
+      } else {
+        navigate('/')
+      }
+      return
+    }
 
-  const linkBase = scrolled
-    ? 'text-[var(--text-heading)]'
-    : 'text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.40)]'
+    // OTHER SECTIONS
+    if (isHome) {
+      smoothScrollTo(target)
+    } else {
+      navigate('/', { state: { scrollTo: target } })
+    }
+  }
 
-  const linkHover = scrolled
-    ? 'hover:text-[var(--primary)]'
-    : 'hover:text-white/90'
-
-  // CTA
-  const ctaBase = [
-    'inline-flex items-center justify-center rounded-full',
-    'px-4 xl:px-5 py-2',
-    'text-sm font-semibold',
-    'transition',
-    'active:scale-[0.98]',
-  ].join(' ')
-
-  // On hero: keep “glass” so it works on images
-  const ctaHero = [
-    'bg-white/12 text-white',
-    'border border-white/25',
-    'backdrop-blur-md',
-    'hover:bg-white/18',
-    'shadow-[0_10px_26px_rgba(0,0,0,0.22)]',
-  ].join(' ')
-
-  // Scrolled: clear brand button with good contrast
-  const ctaScrolled = [
-    'bg-[var(--primary)] text-[var(--bg-page)]',
-    'hover:bg-[var(--primary-hover)]',
-    'shadow-[0_10px_26px_rgba(122,63,76,0.18)]',
-    'focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/25',
-  ].join(' ')
+  // ✅ Handle scroll AFTER route change
+  useEffect(() => {
+    const state = location.state as { scrollTo?: string }
+    if (state?.scrollTo) {
+      setTimeout(() => {
+        smoothScrollTo(state.scrollTo!)
+      }, 80)
+    }
+  }, [location])
 
   return (
     <header
       className={[
-        'fixed top-0 left-0 w-full z-50',
-        'transition-all duration-300',
-        headerBase,
+        'fixed top-0 left-0 w-full z-50 transition-all duration-300',
+        scrolled
+          ? 'backdrop-blur-xl bg-[var(--surface-muted)]/96 border-b border-[var(--surface-border)] shadow-[var(--shadow-soft)]'
+          : 'bg-transparent',
         hidden ? '-translate-y-full' : 'translate-y-0',
       ].join(' ')}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-        {/* Brand */}
+      <div className="relative max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+        {/* Brand = Home */}
         <a
-          href="#home"
-          onClick={(e) => handleScroll(e, '#home')}
-          className={['font-extrabold tracking-tight text-xl sm:text-xl', brandText].join(' ')}
+          href="/"
+          onClick={(e) => handleNav(e, '#home')}
+          className={[
+            'font-extrabold tracking-tight text-xl',
+            scrolled ? 'text-[var(--text-heading)]' : 'text-white',
+          ].join(' ')}
         >
           Antharaganga Hospital
           <span className={scrolled ? 'text-[var(--primary)]' : 'text-white/90'}>.</span>
         </a>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+        <nav className="hidden lg:flex items-center gap-6">
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              onClick={(e) => handleScroll(e, item.href)}
-              className={['font-medium transition text-sm xl:text-[15px]', linkBase, linkHover].join(' ')}
+              onClick={(e) => handleNav(e, item.href)}
+              className={[
+                'text-sm font-medium transition',
+                scrolled ? 'text-[var(--text-body)] hover:text-[var(--primary)]' : 'text-white',
+              ].join(' ')}
             >
               {item.label}
             </a>
           ))}
 
+          {/* Join The Cause (NORMAL NAV) */}
           <a
             href="/join-the-cause"
-            className={['ml-2', ctaBase, scrolled ? ctaScrolled : ctaHero].join(' ')}
+            onClick={() => setOpen(false)}
+            className={[
+              'ml-2 rounded-full px-5 py-2 text-sm font-semibold transition',
+              scrolled
+                ? 'bg-[var(--primary)] text-[var(--bg-page)] hover:bg-[var(--primary-hover)]'
+                : 'bg-white/15 text-white border border-white/25',
+            ].join(' ')}
           >
             Join The Cause
-          </a>
-        </nav>
-
-        {/* Tablet Nav */}
-        <nav className="hidden md:flex lg:hidden items-center gap-5">
-          {navItems.slice(0, 4).map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={(e) => handleScroll(e, item.href)}
-              className={['font-medium transition text-sm', linkBase, linkHover].join(' ')}
-            >
-              {item.label}
-            </a>
-          ))}
-
-          <a
-            href="/join-the-cause"
-            className={[ctaBase, scrolled ? ctaScrolled : ctaHero].join(' ')}
-          >
-            Join
           </a>
         </nav>
 
         {/* Mobile Toggle */}
         <button
           className={[
-            'md:hidden rounded-xl px-3 py-2 transition',
-            scrolled
-              ? 'text-[var(--text-heading)] hover:bg-[var(--surface-muted)]'
-              : 'text-white hover:bg-white/12',
+            'lg:hidden rounded-xl px-3 py-2 transition',
+            scrolled ? 'text-[var(--text-heading)]' : 'text-white',
           ].join(' ')}
           onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle menu"
-          aria-expanded={open}
         >
           {open ? '✕' : '☰'}
         </button>
@@ -193,27 +166,25 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden bg-[var(--bg-section)]/97 backdrop-blur-xl border-t border-[var(--surface-border)] shadow-[0_18px_50px_rgba(122,63,76,0.14)]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-            <div className="flex flex-col">
-              {navItems.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={(e) => handleScroll(e, item.href)}
-                  className="py-3 border-b border-[var(--surface-border)] text-[var(--text-heading)] font-medium hover:text-[var(--primary)] transition"
-                >
-                  {item.label}
-                </a>
-              ))}
-
+        <div className="lg:hidden bg-[var(--surface-muted)]/98 backdrop-blur-xl border-t border-[var(--surface-border)]">
+          <div className="px-4 py-4 flex flex-col">
+            {navItems.map((item) => (
               <a
-                href="/join-the-cause"
-                className="mt-4 inline-flex justify-center rounded-full px-5 py-3 font-semibold bg-[var(--primary)] text-[var(--bg-page)] hover:bg-[var(--primary-hover)] shadow-[0_10px_26px_rgba(122,63,76,0.18)] transition active:scale-[0.98]"
+                key={item.href}
+                href={item.href}
+                onClick={(e) => handleNav(e, item.href)}
+                className="py-3 text-[var(--text-heading)] font-medium"
               >
-                Join The Cause
+                {item.label}
               </a>
-            </div>
+            ))}
+
+            <a
+              href="/join-the-cause"
+              className="mt-4 rounded-full px-5 py-3 font-semibold bg-[var(--primary)] text-[var(--bg-page)] text-center"
+            >
+              Join The Cause
+            </a>
           </div>
         </div>
       )}

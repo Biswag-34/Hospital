@@ -13,7 +13,7 @@ export default function DoctorCard({ name, spec, img }: Doctor) {
           relative overflow-hidden rounded-3xl
           bg-[var(--surface)]
           border border-[var(--surface-border)]
-          shadow-md
+          shadow-[var(--shadow-soft)]
         "
       >
         <img
@@ -21,31 +21,38 @@ export default function DoctorCard({ name, spec, img }: Doctor) {
           alt={name}
           loading="lazy"
           className="
-            w-full object-cover
-            h-[260px]
+            h-[260px] w-full object-cover
             sm:h-[300px]
             md:h-[320px]
             lg:h-[340px]
-            transition-transform duration-700
-            group-hover:scale-[1.03]
+            transition-transform duration-700 ease-out
+            group-hover:scale-[1.025]
           "
         />
 
-        {/* subtle vignette to improve readability */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/15 via-black/0 to-black/0" />
+        {/* Warm readability overlay (theme-based, NOT black) */}
+        <div
+          className="
+            pointer-events-none absolute inset-0
+            bg-gradient-to-t
+            from-[var(--primary-soft)]
+            via-transparent
+            to-transparent
+          "
+        />
 
-        {/* Designation badge bottom-right */}
+        {/* Designation badge */}
         <div className="absolute bottom-4 right-4">
           <div
             className="
               rounded-2xl
-              bg-[var(--surface)]/92 backdrop-blur
+              bg-[var(--surface-muted)]/90 backdrop-blur
               px-4 py-2
-              shadow-lg
               border border-[var(--surface-border)]
+              shadow-[var(--shadow-soft)]
             "
           >
-            <p className="text-xs font-semibold text-[var(--primary)]">
+            <p className="text-xs font-semibold tracking-wide text-[var(--primary)]">
               {spec}
             </p>
           </div>

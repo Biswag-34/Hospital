@@ -87,30 +87,33 @@ export default function Footer() {
     <footer
       ref={footerRef}
       className="relative overflow-hidden"
-      style={{ backgroundColor: 'var(--bg-dark)', color: 'rgba(245,241,236,0.80)' }}
+      style={{
+        backgroundColor: 'var(--bg-dark)',
+        color: 'rgba(239,230,220,0.78)', // warm parchment text (not white)
+      }}
     >
-      {/* Accent line */}
+      {/* Accent line (theme-driven) */}
       <div
         className="h-[2px] w-full"
         style={{
           background:
-            'linear-gradient(90deg, transparent, rgba(156,90,60,0.65), transparent)',
+            'linear-gradient(90deg, transparent, rgba(111,51,64,0.70), transparent)',
         }}
       />
 
-      {/* Background ornaments: subtle Indian jali + mandala arcs */}
+      {/* Background ornaments */}
       <div className="pointer-events-none absolute inset-0">
-        {/* Soft glows */}
+        {/* Soft glows — maroon based */}
         <div
-          className="absolute -top-24 left-1/3 h-[360px] w-[360px] rounded-full blur-3xl opacity-40"
-          style={{ background: 'rgba(156, 90, 60, 0.20)' }}
+          className="absolute -top-24 left-1/3 h-[360px] w-[360px] rounded-full blur-3xl opacity-45"
+          style={{ background: 'rgba(111, 51, 64, 0.26)' }}
         />
         <div
           className="absolute -bottom-28 right-1/4 h-[380px] w-[380px] rounded-full blur-3xl opacity-35"
-          style={{ background: 'rgba(107, 124, 89, 0.18)' }}
+          style={{ background: 'rgba(135, 81, 93, 0.22)' }}
         />
 
-        {/* Large line art */}
+        {/* Line art */}
         <svg
           className="absolute -left-24 -top-16 h-[360px] w-[360px] opacity-[0.16]"
           viewBox="0 0 320 320"
@@ -120,7 +123,6 @@ export default function Footer() {
           <circle cx="160" cy="160" r="118" stroke="var(--secondary)" strokeWidth="2.6" opacity="0.55" />
           <circle cx="160" cy="160" r="82" stroke="var(--primary)" strokeWidth="3.0" opacity="0.55" strokeDasharray="9 8" />
           <path d="M70 200C95 235 225 235 250 200" stroke="var(--primary)" strokeWidth="3.0" opacity="0.5" />
-          {/* jali grid */}
           {Array.from({ length: 8 }).map((_, i) => {
             const x = 92 + i * 18
             return (
@@ -141,18 +143,8 @@ export default function Footer() {
           fill="none"
           aria-hidden="true"
         >
-          <path
-            d="M60 220C120 120 260 120 320 220"
-            stroke="var(--secondary)"
-            strokeWidth="3.0"
-            opacity="0.45"
-          />
-          <path
-            d="M80 260C140 180 240 180 300 260"
-            stroke="var(--primary)"
-            strokeWidth="3.2"
-            opacity="0.45"
-          />
+          <path d="M60 220C120 120 260 120 320 220" stroke="var(--secondary)" strokeWidth="3.0" opacity="0.45" />
+          <path d="M80 260C140 180 240 180 300 260" stroke="var(--primary)" strokeWidth="3.2" opacity="0.45" />
           <circle cx="190" cy="210" r="120" stroke="var(--primary)" strokeWidth="2.6" opacity="0.30" />
         </svg>
       </div>
@@ -169,21 +161,21 @@ export default function Footer() {
                   borderColor: 'rgba(255,255,255,0.10)',
                 }}
               >
-                <Stethoscope size={18} style={{ color: 'rgba(245,241,236,0.90)' }} />
+                <Stethoscope size={18} style={{ color: 'rgba(239,230,220,0.92)' }} />
               </div>
 
               <div>
-                <h3 className="text-2xl font-extrabold tracking-tight" style={{ color: 'rgba(245,241,236,0.95)' }}>
+                <h3 className="text-2xl font-extrabold tracking-tight" style={{ color: 'rgba(239,230,220,0.95)' }}>
                   Antharaganga Hospital
                   <span style={{ color: 'var(--primary)' }}>.</span>
                 </h3>
-                <p className="text-xs" style={{ color: 'rgba(245,241,236,0.60)' }}>
+                <p className="text-xs" style={{ color: 'rgba(239,230,220,0.60)' }}>
                   Charitable Rural Hospital
                 </p>
               </div>
             </div>
 
-            <p className="mt-5 text-sm leading-relaxed" style={{ color: 'rgba(245,241,236,0.70)' }}>
+            <p className="mt-5 text-sm leading-relaxed" style={{ color: 'rgba(239,230,220,0.72)' }}>
               Compassionate, affordable care with modern diagnostics and a patient-first approach.
             </p>
 
@@ -198,10 +190,10 @@ export default function Footer() {
               >
                 <Ambulance className="mt-0.5" size={18} style={{ color: 'var(--primary)' }} />
                 <div>
-                  <p className="text-sm font-semibold" style={{ color: 'rgba(245,241,236,0.92)' }}>
+                  <p className="text-sm font-semibold" style={{ color: 'rgba(239,230,220,0.92)' }}>
                     24/7 Emergency
                   </p>
-                  <p className="text-xs" style={{ color: 'rgba(245,241,236,0.62)' }}>
+                  <p className="text-xs" style={{ color: 'rgba(239,230,220,0.62)' }}>
                     Rapid response and critical support
                   </p>
                 </div>
@@ -216,10 +208,10 @@ export default function Footer() {
               >
                 <Clock className="mt-0.5" size={18} style={{ color: 'var(--secondary)' }} />
                 <div>
-                  <p className="text-sm font-semibold" style={{ color: 'rgba(245,241,236,0.92)' }}>
+                  <p className="text-sm font-semibold" style={{ color: 'rgba(239,230,220,0.92)' }}>
                     OPD Hours
                   </p>
-                  <p className="text-xs" style={{ color: 'rgba(245,241,236,0.62)' }}>
+                  <p className="text-xs" style={{ color: 'rgba(239,230,220,0.62)' }}>
                     Mon–Sat: 9:00 AM – 8:00 PM
                   </p>
                 </div>
@@ -238,13 +230,13 @@ export default function Footer() {
                   key={label}
                   href="#"
                   aria-label={label}
-                  className="h-10 w-10 rounded-full grid place-items-center transition"
+                  className="h-10 w-10 rounded-full grid place-items-center transition hover:translate-y-[-1px]"
                   style={{
                     background: 'rgba(255,255,255,0.06)',
                     border: '1px solid rgba(255,255,255,0.10)',
                   }}
                 >
-                  <Icon size={18} style={{ color: 'rgba(245,241,236,0.86)' }} />
+                  <Icon size={18} style={{ color: 'rgba(239,230,220,0.86)' }} />
                 </a>
               ))}
             </div>
@@ -252,7 +244,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="ft-col lg:col-span-3">
-            <h4 className="text-lg font-semibold mb-5" style={{ color: 'rgba(245,241,236,0.92)' }}>
+            <h4 className="text-lg font-semibold mb-5" style={{ color: 'rgba(239,230,220,0.92)' }}>
               Quick Links
             </h4>
 
@@ -261,14 +253,14 @@ export default function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="group inline-flex items-center gap-2 transition"
-                    style={{ color: 'rgba(245,241,236,0.72)' }}
+                    className="group inline-flex items-center gap-2 transition hover:opacity-100"
+                    style={{ color: 'rgba(239,230,220,0.72)' }}
                   >
                     <span
                       className="h-1.5 w-1.5 rounded-full transition"
-                      style={{ backgroundColor: 'rgba(156,90,60,0.65)' }}
+                      style={{ backgroundColor: 'rgba(111,51,64,0.78)' }}
                     />
-                    <span className="group-hover:opacity-100" style={{ opacity: 0.95 }}>
+                    <span className="group-hover:opacity-100" style={{ opacity: 0.92 }}>
                       {link.label}
                     </span>
                   </a>
@@ -279,33 +271,33 @@ export default function Footer() {
 
           {/* Departments */}
           <div className="ft-col lg:col-span-3">
-            <h4 className="text-lg font-semibold mb-5" style={{ color: 'rgba(245,241,236,0.92)' }}>
+            <h4 className="text-lg font-semibold mb-5" style={{ color: 'rgba(239,230,220,0.92)' }}>
               Departments
             </h4>
 
             <ul className="grid grid-cols-2 gap-y-3 text-sm">
               {departments.map((d) => (
-                <li key={d} className="transition" style={{ color: 'rgba(245,241,236,0.72)' }}>
+                <li key={d} style={{ color: 'rgba(239,230,220,0.72)' }}>
                   {d}
                 </li>
               ))}
             </ul>
 
-            <p className="mt-5 text-xs" style={{ color: 'rgba(245,241,236,0.55)' }}>
+            <p className="mt-5 text-xs" style={{ color: 'rgba(239,230,220,0.56)' }}>
               Comprehensive specialties with essential diagnostics and emergency readiness.
             </p>
           </div>
 
           {/* Contact */}
           <div className="ft-col lg:col-span-2">
-            <h4 className="text-lg font-semibold mb-5" style={{ color: 'rgba(245,241,236,0.92)' }}>
+            <h4 className="text-lg font-semibold mb-5" style={{ color: 'rgba(239,230,220,0.92)' }}>
               Contact
             </h4>
 
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="mt-1" style={{ color: 'var(--primary)' }} />
-                <span style={{ color: 'rgba(245,241,236,0.72)' }}>
+                <span style={{ color: 'rgba(239,230,220,0.72)' }}>
                   123 Healthcare Avenue,<br />
                   Wellness City, India
                 </span>
@@ -313,29 +305,29 @@ export default function Footer() {
 
               <li className="flex items-center gap-3">
                 <Phone size={18} style={{ color: 'var(--primary)' }} />
-                <span style={{ color: 'rgba(245,241,236,0.72)' }}>+91 98765 43210</span>
+                <span style={{ color: 'rgba(239,230,220,0.72)' }}>+91 98765 43210</span>
               </li>
 
               <li className="flex items-center gap-3">
                 <Mail size={18} style={{ color: 'var(--primary)' }} />
-                <span style={{ color: 'rgba(245,241,236,0.72)' }}>contact@qlinique.com</span>
+                <span style={{ color: 'rgba(239,230,220,0.72)' }}>contact@qlinique.com</span>
               </li>
             </ul>
 
             {/* CTA */}
             <a
-  href="/join-the-cause"
-  className="mt-6 inline-flex w-full justify-center rounded-full px-2 py-3 font-semibold shadow-sm transition active:scale-[0.98]"
-  style={{
-    backgroundColor: 'var(--primary)',
-    color: 'white',
-  }}
->
-  Join The Cause
-</a>
+              href="/join-the-cause"
+              className="mt-6 inline-flex w-full justify-center rounded-full px-2 py-3 font-semibold shadow-sm transition active:scale-[0.98]"
+              style={{
+                backgroundColor: 'var(--primary)',
+                color: 'var(--bg-page)',
+                boxShadow: 'var(--shadow-soft)',
+              }}
+            >
+              Join The Cause
+            </a>
 
-
-            <p className="mt-3 text-xs" style={{ color: 'rgba(245,241,236,0.55)' }}>
+            <p className="mt-3 text-xs" style={{ color: 'rgba(239,230,220,0.55)' }}>
               For emergencies, call immediately. For general enquiries, use the contact form.
             </p>
           </div>
@@ -346,11 +338,11 @@ export default function Footer() {
           className="ft-bottom mt-10 sm:mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm"
           style={{ borderTop: '1px solid rgba(255,255,255,0.10)' }}
         >
-          <span style={{ color: 'rgba(245,241,236,0.60)' }}>
-            © {new Date().getFullYear()} Qlinique. All rights reserved.
+          <span style={{ color: 'rgba(239,230,220,0.60)' }}>
+            © {new Date().getFullYear()} Antharaganga Hospital. All rights reserved.
           </span>
 
-          <div className="flex gap-6" style={{ color: 'rgba(245,241,236,0.60)' }}>
+          <div className="flex gap-6" style={{ color: 'rgba(239,230,220,0.60)' }}>
             <a href="#" className="hover:opacity-100 transition" style={{ opacity: 0.9 }}>
               Privacy Policy
             </a>
@@ -360,6 +352,14 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        footer a:focus-visible {
+          outline: none;
+          box-shadow: var(--ring);
+          border-radius: 9999px;
+        }
+      `}</style>
     </footer>
   )
 }

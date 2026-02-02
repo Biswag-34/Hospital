@@ -101,40 +101,35 @@ export default function OurWork() {
     <section
       ref={sectionRef}
       id="services"
-      className="section-alt relative overflow-hidden py-16 sm:py-20 lg:py-24"
+      className="section-alt relative overflow-hidden bg-[var(--bg-section)] py-16 sm:py-20 lg:py-24"
     >
-      {/* background accents */}
+      {/* background accents (theme-driven) */}
       <div className="pointer-events-none absolute inset-0">
-        <div
-          className="absolute -top-28 -left-28 h-[420px] w-[420px] rounded-full blur-3xl opacity-50"
-          style={{ background: 'rgba(156,90,60,0.10)' }}
-        />
-        <div
-          className="absolute -bottom-28 -right-28 h-[420px] w-[420px] rounded-full blur-3xl opacity-45"
-          style={{ background: 'rgba(107,124,89,0.10)' }}
-        />
+        <div className="absolute -top-28 -left-28 h-[420px] w-[420px] rounded-full blur-3xl opacity-55 bg-[var(--primary-soft)]" />
+        <div className="absolute -bottom-28 -right-28 h-[420px] w-[420px] rounded-full blur-3xl opacity-45 bg-[var(--calm-soft)]" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="ow-header mb-10 sm:mb-12 text-center">
-          <h2
-            className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight"
-            style={{ color: 'var(--text-heading)' }}
-          >
+        <div className="ow-header mb-10 text-center sm:mb-12">
+          <p className="text-xs font-bold tracking-widest text-[var(--text-muted)]">
+            OUR WORK
+          </p>
+
+          <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[var(--text-heading)] sm:text-3xl lg:text-4xl">
             Our Work
           </h2>
-          <p
-            className="mt-3 text-sm sm:text-[15px] leading-relaxed max-w-2xl mx-auto"
-            style={{ color: 'var(--text-body)' }}
-          >
+
+          <div className="mx-auto mt-3 h-[3px] w-16 rounded-full bg-[var(--primary-soft)]" />
+
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[var(--text-body)] sm:text-[15px]">
             Programs and progress that strengthen rural healthcare, disability care, prevention, and rehabilitation.
           </p>
         </div>
 
         {/* Carousel */}
         <div className="relative">
-          {/* ✅ ONE navigation pair (desktop+mobile same buttons) */}
+          {/* ✅ ONE navigation pair */}
           <button
             ref={prevRef}
             type="button"
@@ -143,17 +138,18 @@ export default function OurWork() {
               -translate-x-1/2
               h-11 w-11 lg:h-12 lg:w-12
               inline-flex items-center justify-center
-              rounded-full border shadow-sm
-              transition active:scale-95
+              rounded-full border
+              bg-[var(--surface-muted)]
+              shadow-[var(--shadow-soft)]
+              transition hover:shadow-[var(--shadow-strong)]
+              active:scale-95
               z-10
+              focus-visible:outline-none
             "
             aria-label="Previous"
-            style={{
-              background: 'var(--surface)',
-              borderColor: 'var(--surface-border)',
-            }}
+            style={{ borderColor: 'var(--surface-border)' }}
           >
-            <ChevronLeft className="h-5 w-5" style={{ color: 'var(--text-heading)' }} />
+            <ChevronLeft className="h-5 w-5 text-[var(--text-heading)]" />
           </button>
 
           <button
@@ -164,25 +160,24 @@ export default function OurWork() {
               translate-x-1/2
               h-11 w-11 lg:h-12 lg:w-12
               inline-flex items-center justify-center
-              rounded-full border shadow-sm
-              transition active:scale-95
+              rounded-full border
+              bg-[var(--surface-muted)]
+              shadow-[var(--shadow-soft)]
+              transition hover:shadow-[var(--shadow-strong)]
+              active:scale-95
               z-10
+              focus-visible:outline-none
             "
             aria-label="Next"
-            style={{
-              background: 'var(--surface)',
-              borderColor: 'var(--surface-border)',
-            }}
+            style={{ borderColor: 'var(--surface-border)' }}
           >
-            <ChevronRight className="h-5 w-5" style={{ color: 'var(--text-heading)' }} />
+            <ChevronRight className="h-5 w-5 text-[var(--text-heading)]" />
           </button>
 
           <Swiper
             modules={[Navigation, Autoplay, Pagination]}
             onSwiper={(s) => (swiperRef.current = s)}
-            // ✅ Safe navigation binding with refs
             onBeforeInit={(swiper) => {
-              // Swiper expects navigation elements on params
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const nav = (swiper.params.navigation as any) || {}
               nav.prevEl = prevRef.current
@@ -242,11 +237,12 @@ export default function OurWork() {
           .ourwork-swiper { padding-left: 70px; padding-right: 70px; }
         }
 
+        /* Side-slide preview effect (softer + premium) */
         .ourwork-swiper .swiper-slide {
           transition: transform 900ms ease, filter 900ms ease, opacity 900ms ease;
-          opacity: 0.35;
-          filter: blur(3px);
-          transform: scale(0.92);
+          opacity: 0.55;
+          filter: blur(1.6px);
+          transform: scale(0.94);
         }
         .ourwork-swiper .swiper-slide.swiper-slide-active {
           opacity: 1;
@@ -258,6 +254,7 @@ export default function OurWork() {
           position: relative;
           margin-top: 10px;
         }
+
         .ow-bullet {
           width: 8px;
           height: 8px;
@@ -265,11 +262,17 @@ export default function OurWork() {
           border-radius: 9999px;
           margin: 0 5px !important;
           transition: all 300ms ease;
-          background: rgba(47, 62, 52, 0.18);
+          background: rgba(74, 55, 60, 0.20); /* warm muted from theme text */
         }
         .ow-bullet-active {
           width: 22px;
-          background: rgba(156, 90, 60, 0.70);
+          background: var(--primary);
+          opacity: 0.85;
+        }
+
+        /* focus ring on nav buttons */
+        #services button:focus-visible {
+          box-shadow: var(--ring);
         }
       `}</style>
     </section>

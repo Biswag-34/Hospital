@@ -28,8 +28,13 @@ export default function ProjectCard({ project, onJoin }: Props) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="group relative overflow-hidden rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)]
-                 shadow-[0_10px_30px_rgba(122,63,76,0.10)]"
+      className={[
+        "group relative overflow-hidden rounded-2xl border border-[var(--surface-border)]",
+        "bg-[var(--surface)] shadow-[var(--shadow-soft)]",
+        "transition-shadow",
+        "hover:shadow-[var(--shadow-strong)]",
+        "focus-within:shadow-[var(--shadow-strong)]",
+      ].join(" ")}
     >
       {/* Image */}
       <div className="relative h-44 w-full overflow-hidden">
@@ -38,11 +43,11 @@ export default function ProjectCard({ project, onJoin }: Props) {
           style={{ backgroundImage: `url(${project.image})` }}
         />
 
-        {/* softer overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-dark)]/60 via-[var(--bg-dark)]/10 to-transparent" />
+        {/* Stronger readability fade (works on bright images) */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-dark)]/70 via-[var(--bg-dark)]/18 to-transparent" />
 
         {/* badges */}
-        <div className="absolute left-4 top-4 flex items-center gap-2">
+        <div className="absolute left-4 top-4 flex flex-wrap items-center gap-2">
           {project.urgent && (
             <span className="rounded-full bg-[var(--secondary)] px-3 py-1 text-xs font-semibold text-[var(--bg-page)] shadow-sm">
               Urgent
@@ -54,7 +59,13 @@ export default function ProjectCard({ project, onJoin }: Props) {
           </span>
 
           {startLabel && (
-            <span className="rounded-full bg-white/16 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md">
+            <span
+              className={[
+                "rounded-full px-3 py-1 text-xs font-semibold backdrop-blur-md",
+                "border border-white/15",
+                "bg-[var(--bg-dark)]/35 text-white",
+              ].join(" ")}
+            >
               Starting {startLabel}
             </span>
           )}
@@ -127,8 +138,14 @@ export default function ProjectCard({ project, onJoin }: Props) {
         <div className="mt-5 flex items-center justify-between gap-3">
           <button
             onClick={() => onJoin?.(project.id)}
-            className="w-full rounded-xl bg-[var(--primary)] px-4 py-3 text-sm font-semibold text-[var(--bg-page)]
-                       shadow-[0_8px_24px_rgba(122,63,76,0.10)] transition hover:bg-[var(--primary-hover)]"
+            className={[
+              "w-full rounded-xl px-4 py-3 text-sm font-semibold",
+              "bg-[var(--primary)] text-[var(--bg-page)]",
+              "shadow-[var(--shadow-soft)] transition",
+              "hover:bg-[var(--primary-hover)] hover:shadow-[var(--shadow-strong)]",
+              "active:scale-[0.99]",
+              "focus:outline-none focus-visible:shadow-[var(--ring)]",
+            ].join(" ")}
           >
             Join The Cause
           </button>

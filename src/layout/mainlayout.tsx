@@ -17,11 +17,15 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <a
         href="#main-content"
         className={[
-          'sr-only focus:not-sr-only fixed top-2 left-2 z-[999]',
-          'bg-[var(--surface)] text-[var(--text-heading)]',
-          'px-3 py-2 rounded-xl shadow',
+          'sr-only focus:not-sr-only fixed top-3 left-3 z-[999]',
+          'rounded-2xl px-4 py-2',
           'border border-[var(--surface-border)]',
+          'bg-[var(--surface-muted)] text-[var(--text-heading)]',
+          'shadow-[var(--shadow-soft)]',
+          'transition',
+          'focus-visible:outline-none',
         ].join(' ')}
+        style={{ boxShadow: 'var(--shadow-soft)' }}
       >
         Skip to content
       </a>
@@ -34,6 +38,12 @@ export default function MainLayout({ children }: MainLayoutProps) {
       </main>
 
       <Footer />
+
+      <style>{`
+        a[href="#main-content"]:focus-visible {
+          box-shadow: var(--ring);
+        }
+      `}</style>
     </div>
   )
 }

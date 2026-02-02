@@ -30,44 +30,44 @@ export default function Doctors() {
 
   const canLoop = slides.length > 1
 
+  const navBtn =
+    'group inline-flex h-11 w-11 items-center justify-center rounded-full ' +
+    'border border-[var(--surface-border)] ' +
+    'bg-[var(--surface-muted)] ' +
+    'shadow-[var(--shadow-soft)] transition ' +
+    'hover:shadow-[var(--shadow-strong)] active:scale-95 ' +
+    'focus-visible:outline-none focus-visible:shadow-[var(--shadow-soft)] focus-visible:ring-0'
+
   return (
-    <section id="doctors" className="section py-16 sm:py-20 lg:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="doctors" className="section bg-[var(--bg-section)] py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header row */}
-        <div className="flex items-end justify-between gap-6 mb-8 sm:mb-10">
+        <div className="mb-8 flex items-end justify-between gap-6 sm:mb-10">
           <div className="max-w-2xl">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--text-heading)]">
+            <p className="text-xs font-bold tracking-widest text-[var(--text-muted)]">
+              LEADERSHIP
+            </p>
+
+            <h2 className="mt-2 text-2xl font-extrabold text-[var(--text-heading)] sm:text-3xl lg:text-4xl">
               Our Leadership
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-[var(--text-muted)]">
-             Raghavendra Shri Sai Rural Healthcare Foundation, A non-profit organization with over a decade of experience in rural healthcare, committed to ethical care, accessibility, and long-term community health outcomes.
+
+            {/* subtle calm underline (optional but nice) */}
+            <div className="mt-3 h-[3px] w-16 rounded-full bg-[var(--calm-soft)]" />
+
+            <p className="mt-4 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
+              Raghavendra Shri Sai Rural Healthcare Foundation, a non-profit organization with over a decade of
+              experience in rural healthcare, committed to ethical care, accessibility, and long-term community
+              health outcomes.
             </p>
           </div>
 
           {/* Navigation buttons (desktop) */}
-          <div className="hidden md:flex items-center gap-3">
-            <button
-              className="
-                doc-prev group inline-flex h-11 w-11 items-center justify-center rounded-full
-                border border-[var(--surface-border)]
-                bg-[var(--surface)]
-                shadow-sm transition
-                hover:shadow-md active:scale-95
-              "
-              aria-label="Previous"
-            >
+          <div className="hidden items-center gap-3 md:flex">
+            <button className={['doc-prev', navBtn].join(' ')} aria-label="Previous">
               <ChevronLeft className="h-5 w-5 text-[var(--text-body)] transition group-hover:-translate-x-0.5" />
             </button>
-            <button
-              className="
-                doc-next group inline-flex h-11 w-11 items-center justify-center rounded-full
-                border border-[var(--surface-border)]
-                bg-[var(--surface)]
-                shadow-sm transition
-                hover:shadow-md active:scale-95
-              "
-              aria-label="Next"
-            >
+            <button className={['doc-next', navBtn].join(' ')} aria-label="Next">
               <ChevronRight className="h-5 w-5 text-[var(--text-body)] transition group-hover:translate-x-0.5" />
             </button>
           </div>
@@ -102,7 +102,7 @@ export default function Doctors() {
             {slides.map((group, idx) => (
               <SwiperSlide key={idx}>
                 {/* One frame: responsive grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
                   {group.map((d) => (
                     <DoctorCard key={d.name} {...d} />
                   ))}
@@ -112,25 +112,15 @@ export default function Doctors() {
           </Swiper>
 
           {/* Mobile nav buttons */}
-          <div className="md:hidden mt-7 sm:mt-8 flex justify-center gap-4">
+          <div className="mt-7 flex justify-center gap-4 md:hidden sm:mt-8">
             <button
-              className="
-                doc-prev group inline-flex h-12 w-12 items-center justify-center rounded-full
-                border border-[var(--surface-border)]
-                bg-[var(--surface)]
-                shadow-sm active:scale-95 transition
-              "
+              className={['doc-prev', navBtn, 'h-12 w-12'].join(' ')}
               aria-label="Previous"
             >
               <ChevronLeft className="h-5 w-5 text-[var(--text-body)] transition group-hover:-translate-x-0.5" />
             </button>
             <button
-              className="
-                doc-next group inline-flex h-12 w-12 items-center justify-center rounded-full
-                border border-[var(--surface-border)]
-                bg-[var(--surface)]
-                shadow-sm active:scale-95 transition
-              "
+              className={['doc-next', navBtn, 'h-12 w-12'].join(' ')}
               aria-label="Next"
             >
               <ChevronRight className="h-5 w-5 text-[var(--text-body)] transition group-hover:translate-x-0.5" />
@@ -146,12 +136,12 @@ export default function Doctors() {
 
         .doctor-swiper .swiper-wrapper { align-items: stretch; }
 
-        /* Side-slide preview effect */
+        /* Side-slide preview effect (softer + premium) */
         .doctor-swiper .swiper-slide {
           transition: transform 900ms ease, filter 900ms ease, opacity 900ms ease;
-          opacity: 0.35;
-          filter: blur(3px);
-          transform: scale(0.92);
+          opacity: 0.55;
+          filter: blur(1.6px);
+          transform: scale(0.94);
         }
         .doctor-swiper .swiper-slide.swiper-slide-active {
           opacity: 1;
