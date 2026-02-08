@@ -1,36 +1,76 @@
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { motion, useReducedMotion } from 'framer-motion'
 
 // Swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Pagination } from 'swiper/modules'
+import { Autoplay, Pagination, EffectCoverflow } from 'swiper/modules'
+import type { Swiper as SwiperType } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
 
-// Icons
-import { Star } from 'lucide-react'
+
+import { Link } from 'react-router-dom'
+import { HeartPulse, Sparkles, Award, Star, ArrowRight } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
-type Testimonial = {
+type Story = {
+  id: number
   name: string
-  text: string
-  rating?: number
+  title: string
+  story: string
+  condition: string
+  image: string
+  icon: React.ReactNode
 }
 
-const testimonials: Testimonial[] = [
-  { name: 'Ali R.', text: 'Amazing care and friendly staff!', rating: 5 },
-  { name: 'Meera S.', text: 'Highly recommend this hospital. Doctors are very professional.', rating: 5 },
-  { name: 'Deepak K.', text: 'Clean facility and smooth appointment process.', rating: 4 },
-  { name: 'Sana M.', text: 'Very supportive staff and great consultation experience.', rating: 5 },
-  { name: 'Rahul P.', text: 'Quick check-in, great communication, and friendly team.', rating: 4 },
-  { name: 'Nisha D.', text: 'The service was seamless and the staff were extremely helpful.', rating: 5 },
+const stories: Story[] = [
+  {
+    id: 1,
+    name: 'Murali',
+    title: 'From Patient to Caregiver: A Journey of Resilience',
+    story:
+      'Murali grew up in our institution and at 21 was diagnosed with Adolescent Idiopathic Scoliosis. After surgery and dedicated treatment, he not only recovered but now works at our Special School, giving back to the community that shaped him.',
+    condition: 'Adolescent Idiopathic Scoliosis',
+    image: '/beneficiaries/murali-1.jpeg',
+    icon: <Award className="h-5 w-5" />,
+  },
+  {
+    id: 2,
+    name: 'Sharath Kumar',
+    title: 'The Melody of Recovery: Singing Through Pain',
+    story:
+      'Diagnosed with vesical fistula and urethral stricture, Sharath endured immense pain. With our medical care and support, he underwent successful surgery and discovered his powerful singing voice during recovery.',
+    condition: 'Vesical Fistula with Urethral Stricture',
+    image: '/beneficiaries/sharath-1.jpeg',
+    icon: <Sparkles className="h-5 w-5" />,
+  },
+  {
+    id: 3,
+    name: 'Keerthana',
+    title: 'A New Vision: From Darkness to Light',
+    story:
+      'Abandoned at a young age and admitted to our care at 6, Keerthana was diagnosed with blindness and hormonal imbalance. Through consistent medical treatment and love, she regained her vision and found new hope.',
+    condition: 'Blindness with Hormonal Imbalance',
+    image: '/beneficiaries/keerthana-1.jpeg',
+    icon: <Star className="h-5 w-5" />,
+  },
+  {
+    id: 4,
+    name: 'Seethamma',
+    title: 'Rediscovering Life: Memory Restored',
+    story:
+      "Suffering from continuous epilepsy that required skull surgery, Mrs. Seethamma lost her memory and couldn't recognize her family. After major surgery and dedicated care, she regained her memory and reunited with her loved ones.",
+    condition: 'Continuous Epilepsy with Skull Surgery',
+    image: '/beneficiaries/seethamma-1.jpeg',
+    icon: <HeartPulse className="h-5 w-5" />,
+  },
 ]
 
 function CornerOrnament({ position }: { position: 'tl' | 'tr' | 'bl' | 'br' }) {
-  const common = 'ts-ornament pointer-events-none absolute mix-blend-multiply'
-
+  const common = 'sc-ornament pointer-events-none absolute mix-blend-multiply'
   const pos =
     position === 'tl'
       ? 'top-0 left-0 -translate-x-8 -translate-y-8 sm:-translate-x-10 sm:-translate-y-10'
@@ -46,13 +86,13 @@ function CornerOrnament({ position }: { position: 'tl' | 'tr' | 'bl' | 'br' }) {
   return (
     <div className={`${common} ${pos} ${rotate}`}>
       <svg
-        className="h-[170px] w-[170px] sm:h-[210px] sm:w-[210px] lg:h-[240px] lg:w-[240px]"
+        className="h-[160px] w-[160px] sm:h-[210px] sm:w-[210px] lg:h-[240px] lg:w-[240px]"
         viewBox="0 0 240 240"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
-        <g className="ts-stroke" strokeLinecap="round" strokeLinejoin="round">
+        <g className="sc-stroke" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="120" cy="120" r="90" stroke="var(--secondary)" strokeWidth="2.8" opacity="0.55" />
           <circle
             cx="120"
@@ -63,279 +103,381 @@ function CornerOrnament({ position }: { position: 'tl' | 'tr' | 'bl' | 'br' }) {
             opacity="0.62"
             strokeDasharray="8 7"
           />
-
           <path d="M60 150C84 178 156 178 180 150" stroke="var(--primary)" strokeWidth="3.2" opacity="0.55" />
           <path d="M92 150C104 162 136 162 148 150" stroke="var(--secondary)" strokeWidth="2.6" opacity="0.55" />
-
           <path d="M30 86V30H86" stroke="var(--primary)" strokeWidth="3.4" opacity="0.7" />
           <path d="M154 30H210V86" stroke="var(--secondary)" strokeWidth="3.0" opacity="0.62" />
-
-          {Array.from({ length: 6 }).map((_, i) => {
-            const x = 60 + i * 18
-            return (
-              <path
-                key={`v-${i}`}
-                d={`M${x} 60V180`}
-                stroke="var(--secondary)"
-                strokeWidth="1.6"
-                opacity="0.14"
-              />
-            )
-          })}
-          {Array.from({ length: 6 }).map((_, i) => {
-            const y = 60 + i * 18
-            return (
-              <path
-                key={`h-${i}`}
-                d={`M60 ${y}H180`}
-                stroke="var(--primary)"
-                strokeWidth="1.6"
-                opacity="0.12"
-              />
-            )
-          })}
-
-          <path d="M120 56V82" stroke="var(--primary)" strokeWidth="3.0" opacity="0.55" />
-          <path d="M184 120H158" stroke="var(--secondary)" strokeWidth="3.0" opacity="0.52" />
         </g>
       </svg>
     </div>
   )
 }
 
+function StoryCard({ story, index }: { story: Story; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const reduceMotion = useReducedMotion()
+
+  useEffect(() => {
+    if (!cardRef.current) return
+    const card = cardRef.current
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = card.getBoundingClientRect()
+      const x = ((e.clientX - rect.left) / rect.width) * 100
+      const y = ((e.clientY - rect.top) / rect.height) * 100
+      card.style.setProperty('--mx', `${x}%`)
+      card.style.setProperty('--my', `${y}%`)
+    }
+
+    card.addEventListener('mousemove', handleMouseMove)
+    return () => card.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
+  return (
+    <motion.article
+      ref={cardRef}
+      initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+      whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: '-60px' }}
+      className="group relative h-full"
+    >
+      <div className="pointer-events-none absolute inset-0 rounded-[26px] opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <div
+          className="absolute inset-0 rounded-[26px]"
+          style={{
+            background:
+              'radial-gradient(760px circle at var(--mx) var(--my), color-mix(in srgb, var(--primary) 22%, transparent), transparent 45%)',
+          }}
+        />
+      </div>
+
+      <div className="sc-card relative mx-auto flex h-full w-full max-w-[760px] flex-col overflow-hidden rounded-[26px] border border-black/5 bg-white/85 shadow-[var(--shadow-soft)] backdrop-blur-md">
+        <div className="relative sc-img overflow-hidden">
+          <img src={story.image} alt={story.name} loading="lazy" className="h-full w-full object-contain object-center" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+          <div className="absolute bottom-4 left-4 right-4">
+            <p className="text-[12px] font-semibold text-white/90">{story.name}</p>
+            <h3 className="mt-1 text-[18px] font-extrabold text-white drop-shadow-sm sm:text-[20px]">
+              {story.title}
+            </h3>
+          </div>
+        </div>
+
+        <div className="px-6 pb-5 pt-4 sm:px-7">
+          <div className="flex flex-wrap items-center gap-3">
+            <div
+              className="inline-flex h-11 w-11 items-center justify-center rounded-2xl shadow-[var(--shadow-soft)]"
+              style={{ background: 'var(--primary-soft)', color: 'var(--primary)' }}
+              aria-hidden="true"
+            >
+              {story.icon}
+            </div>
+
+            <span className="inline-flex items-center rounded-full border border-black/5 bg-white/85 px-4 py-1.5 text-[12px] font-semibold text-[var(--text-muted)] backdrop-blur-md">
+              {story.condition}
+            </span>
+          </div>
+
+          <p className="mt-3 text-[14.5px] leading-relaxed text-[var(--text-body)]">{story.story}</p>
+
+          <div
+            className="mt-4 h-[2px] w-full"
+            style={{ background: 'linear-gradient(90deg, transparent, var(--primary-soft), transparent)' }}
+          />
+
+          <Link
+            to="/join-the-cause"
+            className="sc-donate-strip mt-4 flex items-center justify-between gap-3 rounded-2xl px-5 py-3.5"
+            aria-label="Donate Now"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="grid h-9 w-9 place-items-center rounded-2xl bg-white/15">
+                <HeartPulse size={16} className="text-white" />
+              </span>
+              <div className="leading-tight">
+                <p className="text-[13px] font-extrabold text-white">Donate Now</p>
+                <p className="text-[11.5px] font-semibold text-white/85">Support a life-changing treatment</p>
+              </div>
+            </div>
+
+            <span className="inline-flex items-center gap-2 rounded-2xl bg-white/12 px-3.5 py-2 text-[12.5px] font-extrabold text-white">
+              View <ArrowRight size={14} />
+            </span>
+          </Link>
+        </div>
+
+        <div
+          className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full blur-3xl opacity-55"
+          style={{ background: 'var(--primary-soft)' }}
+        />
+        <div
+          className="pointer-events-none absolute -bottom-10 -left-10 h-32 w-32 rounded-full blur-3xl opacity-45"
+          style={{ background: 'var(--calm-soft)' }}
+        />
+      </div>
+    </motion.article>
+  )
+}
+
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null)
+  const swiperRef = useRef<SwiperType | null>(null)
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
     if (!sectionRef.current) return
 
-    const header = sectionRef.current.querySelector('.ts-header')
-    const ornamentStrokeEls = sectionRef.current.querySelectorAll<SVGGeometryElement>('.ts-ornament .ts-stroke > *')
+    const ctx = gsap.context(() => {
+      const header = sectionRef.current?.querySelector('.sc-header')
+      const ornamentStrokeEls = sectionRef.current?.querySelectorAll<SVGGeometryElement>('.sc-ornament .sc-stroke > *')
 
-    if (header) {
-      gsap.fromTo(
-        header,
-        { y: 26, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.85,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-    }
+      if (header) {
+        gsap.fromTo(
+          header,
+          { y: 22, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.85,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: sectionRef.current, start: 'top 82%', toggleActions: 'play none none none' },
+          }
+        )
+      }
 
-    const shapes = Array.from(ornamentStrokeEls)
+      const shapes = Array.from(ornamentStrokeEls ?? [])
+      shapes.forEach((el) => {
+        const len = el.getTotalLength?.()
+        if (!len || !Number.isFinite(len)) return
+        el.style.strokeDasharray = `${len}`
+        el.style.strokeDashoffset = `${len}`
+      })
 
-    shapes.forEach((el) => {
-      const len = el.getTotalLength?.()
-      if (!len || !Number.isFinite(len)) return
-      el.style.strokeDasharray = `${len}`
-      el.style.strokeDashoffset = `${len}`
-    })
+      gsap
+        .timeline({
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 80%', toggleActions: 'play none none none' },
+        })
+        .to(shapes, { strokeDashoffset: 0, duration: 2.0, ease: 'power2.out', stagger: 0.03 })
+    }, sectionRef)
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 78%',
-        toggleActions: 'play none none none',
-      },
-    })
-
-    tl.to(shapes, {
-      strokeDashoffset: 0,
-      duration: 2.5,
-      ease: 'power2.out',
-      stagger: 0.03,
-    })
-
-    return () => {
-      tl.kill()
-      ScrollTrigger.getAll().forEach((st) => st.kill())
-    }
+    return () => ctx.revert()
   }, [])
+
+  // ✅ side-click behavior (prev/next) + loop-safe index
+  const handleSwiperClick = (sw: SwiperType) => {
+    const clickedSlide = sw.clickedSlide as HTMLElement | undefined
+    if (!clickedSlide) return
+    if (clickedSlide.classList.contains('swiper-slide-active')) return
+
+    // Prefer strict prev/next behavior (your requirement)
+    if (clickedSlide.classList.contains('swiper-slide-prev')) {
+      sw.slidePrev()
+      return
+    }
+    if (clickedSlide.classList.contains('swiper-slide-next')) {
+      sw.slideNext()
+      return
+    }
+
+    // Fallback (if Swiper doesn't mark it prev/next due to multiple visible slides)
+    const real = Number(clickedSlide.getAttribute('data-swiper-slide-index'))
+    if (Number.isFinite(real)) sw.slideToLoop(real, 900)
+  }
 
   return (
     <section
       ref={sectionRef}
       id="testimonials"
-      className="section-alt relative overflow-hidden bg-[var(--bg-section)] py-16 sm:py-20 lg:py-24"
+      className="section-alt relative overflow-hidden bg-[var(--bg-section)] py-14 sm:py-16 lg:py-20"
     >
-      {/* Corner ornaments */}
       <CornerOrnament position="tl" />
       <CornerOrnament position="tr" />
       <CornerOrnament position="bl" />
       <CornerOrnament position="br" />
 
-      {/* Soft center washes (theme-driven) */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/3 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl opacity-80 bg-[var(--primary-soft)]" />
-        <div className="absolute left-1/3 bottom-0 h-[520px] w-[520px] -translate-x-1/2 translate-y-1/2 rounded-full blur-3xl opacity-70 bg-[var(--calm-soft)]" />
+        <div className="absolute left-1/2 top-1/3 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl opacity-80 bg-[var(--primary-soft)]" />
+        <div className="absolute left-1/3 bottom-0 h-[560px] w-[560px] -translate-x-1/2 translate-y-1/2 rounded-full blur-3xl opacity-70 bg-[var(--calm-soft)]" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="ts-header mb-8 text-center sm:mb-10">
-          <p className="text-xs font-bold tracking-widest text-[var(--text-muted)]">
-            TESTIMONIALS
-          </p>
+        <div className="sc-header mb-6 text-center sm:mb-7">
+          <p className="text-[11px] font-bold tracking-widest text-[var(--text-muted)] sm:text-xs">HEALING JOURNEYS</p>
 
           <h2 className="mt-2 text-2xl font-extrabold text-[var(--text-heading)] sm:text-3xl lg:text-4xl">
-            What Patients Say
+            Healing Journeys That Inspire Hope
           </h2>
 
-          <div className="mx-auto mt-3 h-[3px] w-16 rounded-full bg-[var(--primary-soft)]" />
+          <div className="mx-auto mt-3 h-[3px] w-16 rounded-full bg-[var(--primary-soft)] sm:w-20" />
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm text-[var(--text-muted)] sm:text-base">
-            Real experiences from people who trusted our care.
+          <p className="mx-auto mt-3 max-w-3xl text-sm text-[var(--text-muted)] sm:mt-4 sm:text-base">
+            A charitable healthcare institution dedicated to rural and disabled communities — where care becomes dignity,
+            safety, and a second chance.
+          </p>
+
+          <p className="mt-4 text-xs font-semibold text-[var(--text-muted)] sm:mt-5">
+            Tip: Click left card = Prev • Right card = Next • Drag smoothly
           </p>
         </div>
 
-        {/* Carousel */}
         <Swiper
-          modules={[Autoplay, Pagination]}
-          slidesPerView={1}
-          spaceBetween={16}
+          onSwiper={(sw) => {
+            swiperRef.current = sw
+
+            // ✅ FIX #1: force first story (index 0) to be main on load (loop-safe)
+            // Use requestAnimationFrame so Swiper finishes loop cloning first.
+            requestAnimationFrame(() => {
+              sw.slideToLoop(0, 0)
+              sw.update()
+            })
+          }}
+          onClick={handleSwiperClick}
+          modules={[Autoplay, Pagination, EffectCoverflow]}
+          effect="coverflow"
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 90,
+            depth: 240,
+            modifier: 1.15,
+            slideShadows: false,
+          }}
+          // ✅ FIX #3: consistent drag physics + always drag from the “current experience”
+          touchEventsTarget="container"
+          grabCursor
+          simulateTouch
+          followFinger
+          threshold={12}
+          shortSwipes
+          longSwipes
+          longSwipesRatio={0.25}
+          longSwipesMs={220}
+          resistance
+          resistanceRatio={0.7}
+          slidesPerGroup={1}
           centeredSlides
+          slideToClickedSlide={false} // we handle click ourselves (prev/next behavior)
+          loop
           speed={900}
-          autoplay={{
-            delay: 3200,
-            pauseOnMouseEnter: true,
-            disableOnInteraction: false,
-          }}
-          pagination={{
-            clickable: true,
-            bulletClass: 'ts-bullet',
-            bulletActiveClass: 'ts-bullet-active',
-          }}
+          autoplay={{ delay: 6000, pauseOnMouseEnter: true, disableOnInteraction: false }}
+          pagination={{ clickable: true, bulletClass: 'sc-bullet', bulletActiveClass: 'sc-bullet-active' }}
+          slidesPerView={1}
+          spaceBetween={70}
           breakpoints={{
-            640: { slidesPerView: 1, spaceBetween: 18 },
-            768: { slidesPerView: 2, spaceBetween: 20 },
-            1024: { slidesPerView: 3, spaceBetween: 22 },
+            360: { slidesPerView: 1, spaceBetween: 18 },
+            520: { slidesPerView: 1.05, spaceBetween: 32 },
+            720: { slidesPerView: 1.35, spaceBetween: 52 },
+            900: { slidesPerView: 2.05, spaceBetween: 70 },
+            1180: { slidesPerView: 2.35, spaceBetween: 84 },
+            1380: { slidesPerView: 3.05, spaceBetween: 96 },
           }}
-          className="testimonial-swiper overflow-visible"
+          className="story-swiper"
         >
-          {testimonials.map((t, i) => (
-            <SwiperSlide key={i} className="h-auto">
-              <div className="h-full overflow-visible pt-6 pb-8">
-                <div className="ts-card relative card overflow-visible px-6 py-6">
-                  {/* Quote badge */}
-                  <div
-                    className="absolute -top-4 -left-4 grid h-9 w-9 place-items-center rounded-2xl shadow-[var(--shadow-soft)] text-white"
-                    style={{ backgroundColor: 'var(--primary)' }}
-                  >
-                    <span className="text-xl leading-none">“</span>
-                  </div>
-
-                  {/* Text (2-line clamp) */}
-                  <p
-                    className="text-[13.5px] leading-relaxed text-[var(--text-body)] sm:text-[14.5px]"
-                    style={{
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    {t.text}
-                  </p>
-
-                  {/* Rating */}
-                  <div className="mt-3 flex gap-1">
-                    {Array.from({ length: 5 }).map((_, idx) => {
-                      const active = idx < (t.rating ?? 5)
-                      return (
-                        <Star
-                          key={idx}
-                          size={14}
-                          className={active ? 'fill-current' : ''}
-                          style={{
-                            color: active ? 'var(--primary)' : 'rgba(74, 55, 60, 0.22)',
-                          }}
-                        />
-                      )
-                    })}
-                  </div>
-
-                  {/* Name bottom-right */}
-                  <div className="mt-5 flex justify-end">
-                    <p className="text-[13px] font-semibold text-[var(--text-heading)]">
-                      — {t.name}
-                    </p>
-                  </div>
-
-                  {/* Accent line (theme-driven) */}
-                  <div
-                    className="mt-4 h-[2px] w-full"
-                    style={{
-                      background:
-                        'linear-gradient(90deg, transparent, var(--primary-soft), transparent)',
-                    }}
-                  />
-                </div>
+          {stories.map((story, idx) => (
+            <SwiperSlide key={story.id} className="h-auto py-6">
+              <div className="sc-slide-inner">
+                <StoryCard story={story} index={idx} />
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
+
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+          whileInView={reduceMotion ? {} : { opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          viewport={{ once: true }}
+          className="mt-10 text-center sm:mt-12"
+        >
+          <p className="text-sm text-[var(--text-muted)]">
+            Antharaganga Vidya Samsthe • Charitable healthcare for rural & disabled communities
+          </p>
+        </motion.div>
       </div>
 
-      {/* Scale / blur inactive slides + pagination styling */}
       <style>{`
-        /* Ornaments visibility */
-        .ts-ornament { opacity: 0.26; }
-        @media (min-width: 640px) { .ts-ornament { opacity: 0.22; } }
-        @media (min-width: 1024px) { .ts-ornament { opacity: 0.20; } }
+        .sc-ornament { opacity: 0.22; }
+        @media (min-width: 640px) { .sc-ornament { opacity: 0.20; } }
+        @media (min-width: 1024px) { .sc-ornament { opacity: 0.18; } }
 
-        /* Cursor */
-        .testimonial-swiper { cursor: grab; }
-        .testimonial-swiper:active { cursor: grabbing; }
+        .story-swiper,
+        .story-swiper .swiper,
+        .story-swiper .swiper-wrapper,
+        .story-swiper .swiper-slide { overflow: visible !important; }
+        .story-swiper .swiper-slide { height: auto !important; }
 
-        /* Prevent clipping */
-        .testimonial-swiper,
-        .testimonial-swiper .swiper,
-        .testimonial-swiper .swiper-wrapper,
-        .testimonial-swiper .swiper-slide {
-          overflow: visible !important;
+        /* Never transform swiper-slide itself */
+        .story-swiper .swiper-slide { cursor: pointer; }
+
+        /* Visual effects on inner wrapper */
+        .sc-slide-inner{
+          transition: opacity 520ms ease, filter 520ms ease, transform 520ms ease;
+          will-change: transform, opacity, filter;
+          opacity: 0.18;
+          filter: blur(6px);
+          transform: translateY(14px) scale(0.94);
+          pointer-events: auto;
         }
-        .testimonial-swiper .swiper-slide { height: auto !important; }
 
-        /* Scale + blur non-active slides (softer) */
-        .testimonial-swiper .swiper-slide {
-          transition: transform 800ms ease, filter 800ms ease, opacity 800ms ease;
-          opacity: 0.58;
-          filter: blur(1.6px);
-          transform: scale(0.95);
-        }
-        .testimonial-swiper .swiper-slide-active {
+        .story-swiper .swiper-slide-active { z-index: 5; }
+        .story-swiper .swiper-slide-active .sc-slide-inner{
           opacity: 1;
           filter: blur(0);
-          transform: scale(1);
+          transform: translateY(0) scale(1);
+          cursor: grab;
         }
 
-        /* Pagination dots */
-        .testimonial-swiper .swiper-pagination {
-          position: relative;
-          margin-top: 14px;
+        .story-swiper .swiper-slide-prev .sc-slide-inner,
+        .story-swiper .swiper-slide-next .sc-slide-inner{
+          opacity: 0.42;
+          filter: blur(4px);
+          transform: translateY(10px) scale(0.97);
         }
-        .ts-bullet {
-          width: 8px;
-          height: 8px;
-          opacity: 1;
-          border-radius: 9999px;
+
+        @media (max-width: 640px) {
+          .sc-slide-inner{
+            opacity: 0.10;
+            filter: blur(10px);
+            transform: translateY(16px) scale(0.92);
+          }
+          .story-swiper .swiper-slide-prev .sc-slide-inner,
+          .story-swiper .swiper-slide-next .sc-slide-inner{
+            opacity: 0.16;
+            filter: blur(8px);
+            transform: translateY(12px) scale(0.94);
+          }
+          .story-swiper .swiper-slide-active .sc-slide-inner{
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .story-swiper .swiper-pagination { position: relative; margin-top: 16px; }
+        .sc-bullet {
+          width: 8px; height: 8px; border-radius: 9999px;
           margin: 0 5px !important;
-          transition: all 300ms ease;
           background: rgba(74, 55, 60, 0.20);
+          opacity: 1;
+          transition: all 300ms ease;
         }
-        .ts-bullet-active {
-          width: 22px;
+        .sc-bullet-active {
+          width: 26px;
           background: var(--primary);
-          opacity: 0.85;
+          opacity: 0.92;
         }
+
+        .sc-img { height: 220px; }
+        @media (min-width: 520px) { .sc-img { height: 240px; } }
+        @media (min-width: 900px) { .sc-img { height: 250px; } }
+        @media (min-width: 1380px) { .sc-img { height: 260px; } }
+
+        .sc-card { max-height: min(760px, calc(100vh - 120px)); }
+
+        .sc-donate-strip { background: var(--primary); text-decoration: none; }
+        .sc-donate-strip:hover { filter: brightness(1.03); }
+        .sc-donate-strip:active { filter: brightness(0.98); }
       `}</style>
     </section>
   )
