@@ -33,7 +33,7 @@ export default function WorkCard({
           alt={title}
           loading="lazy"
           className="
-            h-[170px] w-full object-cover
+            h-[170px] w-full object-cover-fit
             sm:h-[190px]
             md:h-[210px]
             lg:h-[220px]
@@ -53,7 +53,7 @@ export default function WorkCard({
 
         {/* Tag */}
         {tag && (
-          <div className="absolute left-4 top-4 sm:left-5 sm:top-5">
+          <div className="absolute left-4 top-4 sm:left-5 sm:top-5 ">
             <span
               className="
                 inline-flex rounded-full px-3 py-1 text-xs font-semibold
@@ -73,15 +73,15 @@ export default function WorkCard({
           <div
             className="
               rounded-3xl px-4 py-3 sm:px-5 sm:py-4
-              border backdrop-blur
-              bg-[var(--surface)]/86
+              border 
+              bg-[var(--surface)]/56
             "
             style={{ borderColor: 'var(--surface-border)' }}
           >
             <h3 className="text-[16px] sm:text-[18px] font-extrabold leading-snug text-[var(--text-heading)]">
               {title}
             </h3>
-            <p className="mt-1 text-xs sm:text-sm text-[var(--text-muted)]">
+            <p className="mt-1 font-semibold text-xs sm:text-sm text-[var(--text-muted)]">
               {subtitle}
             </p>
           </div>

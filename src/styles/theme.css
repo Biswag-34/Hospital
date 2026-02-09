@@ -74,4 +74,44 @@
 
   --lh-heading: 1.18;
   --lh-body: 1.6;
+      /* Subtle overlay: keeps image visible */
+      --overlay-soft: linear-gradient(
+         180deg,
+         rgba(28, 15, 18, 0.35) 0%,
+         rgba(28, 15, 18, 0.22) 55%,
+         rgba(28, 15, 18, 0.38) 100%
+      );
+
+      /* Focused “top ribbon” overlay only (best for headings without killing the photo) */
+      --overlay-top-ribbon: linear-gradient(
+         180deg,
+         rgba(28, 15, 18, 0.68) 0%,
+         rgba(28, 15, 18, 0.42) 45%,
+         rgba(28, 15, 18, 0.00) 100%
+      );
+
+      /* Text color for image cards */
+      --text-on-image: #ffffff;
+      --text-on-image-muted: rgba(255, 255, 255, 0.88);
+
+   /* Readability without backdrop */
+   --text-shadow-on-image: 0 2px 14px rgba(0, 0, 0, 0.55);
+   --text-stroke-on-image: rgba(0, 0, 0, 0.28);
+
+   /* Chips (keep subtle, not strong backdrop) */
+   --chip-bg-on-image: rgba(255, 255, 255, 0.22);
+   --chip-border-on-image: rgba(255, 255, 255, 0.30);
+
+  /* Positions */
+  --img-pos-default: center;
+  --img-pos-top: center top;
+  --img-pos-mobile: center 18%;
+
+  /* Heights */
+  --imgcard-min-h: 420px;
+  --imgcard-min-h-sm: 360px;
+  --imgcard-min-h-lg: 380px;
+
+  --keybadge-min-h: 280px;
+  --keybadge-min-h-sm: 240px;
 }

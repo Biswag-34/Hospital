@@ -35,7 +35,7 @@ export default function OurWork() {
           'Basic diagnostics + consultation support',
           'Focus on access, awareness, and early care',
         ],
-        image: '/assets/work/work1.jpg',
+        image: '/work/work1.jpg',
         tag: 'Community Care',
       },
       {
@@ -48,7 +48,7 @@ export default function OurWork() {
           'Practical guidance for real scenarios',
           'Scalable model across villages',
         ],
-        image: '/assets/work/work2.jpg',
+        image: '/work/work 2.jpg',
         tag: 'Training',
       },
       {
@@ -61,7 +61,7 @@ export default function OurWork() {
           'Designed for high-impact rural outcomes',
           'Community-first approach and follow-up',
         ],
-        image: '/assets/work/work3.jpg',
+        image: '/work/work3.jpg',
         tag: 'Vision Care',
       },
     ],

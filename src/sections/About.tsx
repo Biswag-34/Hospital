@@ -22,25 +22,27 @@ import {
 
 gsap.registerPlugin(ScrollTrigger)
 
-/** ---------------------------
- *  VISUAL CLUSTERS / DATA
- * -------------------------- */
-
 const keyBadges = [
   {
-    icon: <Landmark size={18} className="text-[var(--calm)]" />,
+    icon: <Landmark size={20} className="text-[var(--text-on-image)]" />,
     title: 'A Non-Profit, Charitable Venture',
     desc: 'The hospital stands as a long-term promise to rural families, persons with disabilities, and economically vulnerable communities.',
+    bg: '/about/nonprofit.jpg',
+    pos: 'center' as const,
   },
   {
-    icon: <Accessibility size={18} className="text-[var(--primary)]" />,
+    icon: <Accessibility size={20} className="text-[var(--text-on-image)]" />,
     title: 'Free Check-ups for Disabled People',
     desc: 'Priority, dignity-first clinical support and structured disability care.',
+    bg: '/about/d.JPG',
+    pos: 'top' as const,
   },
   {
-    icon: <BadgeIndianRupee size={18} className="text-[var(--accent)]" />,
+    icon: <BadgeIndianRupee size={20} className="text-[var(--text-on-image)]" />,
     title: 'Affordable Care for Everyone',
     desc: 'A partnered initiative of Raghavendra Shri Sai Rural Healthcare Foundation & Antaragange Vidya Samste',
+    bg: '/about/affordable.jpg',
+    pos: 'center' as const,
   },
 ]
 
@@ -63,17 +65,17 @@ const pillars = [
 ]
 
 const clinicalFoundation = [
-  { icon: <Stethoscope size={18} className="text-[var(--calm)]" />, label: 'Outpatient (OPD) and inpatient (IPD) services' },
-  { icon: <Syringe size={18} className="text-[var(--calm)]" />, label: 'Wound care and limb salvage programs' },
-  { icon: <ShieldPlus size={18} className="text-[var(--calm)]" />, label: 'Preventive health check-ups' },
-  { icon: <Microscope size={18} className="text-[var(--calm)]" />, label: 'Mother and child health services' },
+  { icon: <Stethoscope size={22} className="text-[var(--calm)]" />, label: 'Outpatient (OPD) and inpatient (IPD) services' },
+  { icon: <Syringe size={22} className="text-[var(--calm)]" />, label: 'Wound care and limb salvage programs' },
+  { icon: <ShieldPlus size={22} className="text-[var(--calm)]" />, label: 'Preventive health check-ups' },
+  { icon: <Microscope size={22} className="text-[var(--calm)]" />, label: 'Mother and child health services' },
 ]
 
 const disabilityCore = [
-  { icon: <Brain size={18} className="text-[var(--primary)]" />, label: 'Mental health services, including counseling and community psychiatry support' },
-  { icon: <Activity size={18} className="text-[var(--primary)]" />, label: 'Disability rehabilitation and physiotherapy' },
-  { icon: <Accessibility size={18} className="text-[var(--primary)]" />, label: 'Mother and child health services' },
-  { icon: <HeartHandshake size={18} className="text-[var(--primary)]" />, label: 'Chronic disease management' },
+  { icon: <Brain size={22} className="text-[var(--primary)]" />, label: 'Mental health services, including counseling and community psychiatry support' },
+  { icon: <Activity size={22} className="text-[var(--primary)]" />, label: 'Disability rehabilitation and physiotherapy' },
+  { icon: <Accessibility size={22} className="text-[var(--primary)]" />, label: 'Mother and child health services' },
+  { icon: <HeartHandshake size={22} className="text-[var(--primary)]" />, label: 'Chronic disease management' },
 ]
 
 const timeline = [
@@ -117,10 +119,6 @@ const outreachItems = [
   'Awareness initiatives on diabetes, wound care, hygiene, and prevention',
 ]
 
-/** ---------------------------
- *  COMPONENT
- * -------------------------- */
-
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -128,7 +126,6 @@ export default function About() {
     if (!sectionRef.current) return
 
     const ctx = gsap.context(() => {
-      // Reveal blocks
       gsap.utils.toArray<HTMLElement>('.ab-reveal').forEach((el) => {
         gsap.fromTo(
           el,
@@ -147,7 +144,6 @@ export default function About() {
         )
       })
 
-      // Stagger for grids
       gsap.utils.toArray<HTMLElement>('.ab-stagger').forEach((wrap) => {
         const children = wrap.querySelectorAll('.ab-item')
         gsap.fromTo(
@@ -168,7 +164,6 @@ export default function About() {
         )
       })
 
-      // Timeline items
       const tItems = gsap.utils.toArray<HTMLElement>('.ab-timeline-item')
       gsap.fromTo(
         tItems,
@@ -194,6 +189,33 @@ export default function About() {
   const card =
     'rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] shadow-[var(--shadow-soft)]'
 
+  const imgCardBase = [
+    'ab-reveal relative overflow-hidden rounded-3xl p-8 shadow-[var(--shadow-soft)]',
+    'min-h-[var(--imgcard-min-h)] sm:min-h-[var(--imgcard-min-h-sm)] lg:min-h-[var(--imgcard-min-h-lg)]',
+  ].join(' ')
+
+  const badgeBase = [
+    'ab-item relative overflow-hidden rounded-3xl p-7 shadow-[var(--shadow-soft)]',
+    'min-h-[var(--keybadge-min-h)] sm:min-h-[var(--keybadge-min-h-sm)]',
+  ].join(' ')
+
+  const chip =
+    'ab-item flex items-center gap-3 rounded-2xl border border-[var(--chip-border-on-image)] bg-[var(--chip-bg-on-image)] px-4 py-3 backdrop-blur-[8px]'
+
+  const bgPos = (pos: 'top' | 'center') => (pos === 'top' ? 'var(--img-pos-top)' : 'var(--img-pos-default)')
+
+  const titleStyle: React.CSSProperties = {
+    textShadow: '0 2px 12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.3)',
+    WebkitTextStroke: '0.5px rgba(255, 255, 255, 0.2)',
+    fontWeight: 800,
+    letterSpacing: '-0.015em',
+  }
+
+  const bodyStyle: React.CSSProperties = {
+    textShadow: '0 1px 8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.2)',
+    fontWeight: 500,
+  }
+
   return (
     <section
       ref={sectionRef}
@@ -201,7 +223,6 @@ export default function About() {
       className="relative overflow-hidden bg-[var(--bg-section)] py-16 sm:py-20 lg:py-24"
     >
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* HEADER */}
         <div className="ab-reveal max-w-3xl">
           <p className="inline-flex items-center gap-2 rounded-full border border-[var(--surface-border)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--text-muted)] shadow-[var(--shadow-soft)]">
             <Building2 size={14} className="text-[var(--primary)]" />
@@ -219,25 +240,41 @@ export default function About() {
           </p>
         </div>
 
-        {/* KEY BADGES */}
+        {/* First three image cards - text at bottom */}
         <div className="ab-stagger mt-10 grid gap-6 md:grid-cols-3">
           {keyBadges.map((b) => (
-            <div key={b.title} className={['ab-item p-7', card].join(' ')}>
-              <div className="grid h-11 w-11 place-items-center rounded-2xl border border-[var(--surface-border)] bg-[var(--bg-page)]">
-                {b.icon}
+            <div
+              key={b.title}
+              className={`${badgeBase} flex flex-col justify-end`}
+              style={{
+                backgroundImage: `url(${b.bg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: bgPos(b.pos),
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+              
+              <div className="relative z-10 mt-auto pt-6 text-[var(--text-on-image)]">
+                <div className="grid h-12 w-12 place-items-center rounded-2xl border border-white/20 bg-white/15 backdrop-blur-sm mb-4">
+                  {b.icon}
+                </div>
+
+                <h3 className="text-xl font-extrabold" style={titleStyle}>
+                  {b.title}
+                </h3>
+
+                <p className="mt-2 text-base leading-relaxed text-[var(--text-on-image-muted)]" style={bodyStyle}>
+                  {b.desc}
+                </p>
               </div>
-              <h3 className="mt-4 text-lg font-bold text-[var(--text-heading)]">{b.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--text-body)]">{b.desc}</p>
             </div>
           ))}
         </div>
 
-        {/* PILLARS */}
         <div className="ab-reveal mt-14 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <h3 className="text-xl font-extrabold text-[var(--text-heading)] sm:text-2xl">
-              What we stand for
-            </h3>
+            <h3 className="text-xl font-extrabold text-[var(--text-heading)] sm:text-2xl">What we stand for</h3>
             <p className="mt-2 max-w-2xl text-[var(--text-muted)]">
               Our model clusters healthcare delivery into clear pillars that rural families can understand and trust.
             </p>
@@ -256,7 +293,6 @@ export default function About() {
           ))}
         </div>
 
-        {/* VISION + MISSION */}
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
           <div className={['ab-reveal p-8', card].join(' ')}>
             <div className="flex items-center gap-3">
@@ -302,18 +338,12 @@ export default function About() {
           </div>
         </div>
 
-        {/* CARE MODEL + SERVICES */}
         <div className="mt-12 grid gap-6 lg:grid-cols-12">
-          {/* Left: Care Model (dark card) */}
           <div className="ab-reveal relative overflow-hidden rounded-3xl bg-[var(--bg-dark)] p-8 text-[var(--bg-page)] shadow-[var(--shadow-strong)] lg:col-span-5">
             <div className="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-white/10 blur-2xl" />
 
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
-              What makes us unique
-            </p>
-            <h3 className="mt-2 text-xl font-extrabold sm:text-2xl">
-              Rural-first. Disability-first. Community-first.
-            </h3>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">What makes us unique</p>
+            <h3 className="mt-2 text-xl font-extrabold sm:text-2xl">Rural-first. Disability-first. Community-first.</h3>
 
             <div className="mt-6 grid gap-3">
               {[
@@ -331,57 +361,85 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right: Services grouped */}
           <div className="grid gap-6 lg:col-span-7">
-            <div className={['ab-reveal p-8', card].join(' ')}>
-              <h4 className="text-lg font-bold text-[var(--text-heading)]">
-                General Services (Foundation)
-              </h4>
+            {/* General Services card - heading top, chips bottom */}
+            <div
+              className={`${imgCardBase} flex flex-col`}
+              style={{
+                backgroundImage: "url('/about/general-services.png')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center top',
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
 
-              <div className="ab-stagger mt-5 grid gap-3 sm:grid-cols-2">
-                {clinicalFoundation.map((x) => (
-                  <div
-                    key={x.label}
-                    className="ab-item flex items-center gap-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--bg-page)] px-4 py-3"
-                  >
-                    <span className="grid h-9 w-9 place-items-center rounded-xl border border-[var(--surface-border)] bg-[var(--surface)]">
-                      {x.icon}
-                    </span>
-                    <span className="text-sm font-semibold text-[var(--text-body)]">{x.label}</span>
+              <div className="relative z-10 flex h-full flex-col">
+                <div>
+                  <h4 className="text-xl font-extrabold text-white" style={titleStyle}>
+                    General Services (Foundation)
+                  </h4>
+                </div>
+                
+                <div className="mt-auto pt-6">
+                  <div className="ab-stagger grid gap-3 sm:grid-cols-2">
+                    {clinicalFoundation.map((x) => (
+                      <div key={x.label} className={`${chip} bg-black/50 border-white/30`}>
+                        <span className="grid h-12 w-12 place-items-center rounded-xl border border-white/25 bg-white/20 backdrop-blur-sm">
+                          {x.icon}
+                        </span>
+                        <span className="text-sm font-bold text-white" style={bodyStyle}>
+                          {x.label}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
 
-            <div className={['ab-reveal p-8', card].join(' ')}>
-              <h4 className="text-lg font-bold text-[var(--text-heading)]">
-                Disability & Rehabilitation (Core)
-              </h4>
+            {/* Disability & Rehabilitation card - heading top, chips bottom */}
+            <div
+              className={`${imgCardBase} flex flex-col`}
+              style={{
+                backgroundImage: "url('/about/dc.JPG')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
 
-              <div className="ab-stagger mt-5 grid gap-3 sm:grid-cols-2">
-                {disabilityCore.map((x) => (
-                  <div
-                    key={x.label}
-                    className="ab-item flex items-center gap-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--bg-page)] px-4 py-3"
-                  >
-                    <span className="grid h-9 w-9 place-items-center rounded-xl border border-[var(--surface-border)] bg-[var(--surface)]">
-                      {x.icon}
-                    </span>
-                    <span className="text-sm font-semibold text-[var(--text-body)]">{x.label}</span>
+              <div className="relative z-10 flex h-full flex-col">
+                <div>
+                  <h4 className="text-xl font-extrabold text-white" style={titleStyle}>
+                    Disability & Rehabilitation (Core)
+                  </h4>
+                </div>
+                
+                <div className="mt-auto pt-6">
+                  <div className="ab-stagger grid gap-3 sm:grid-cols-2">
+                    {disabilityCore.map((x) => (
+                      <div key={x.label} className={`${chip} bg-black/50 border-white/30`}>
+                        <span className="grid h-12 w-12 place-items-center rounded-xl border border-white/25 bg-white/20 backdrop-blur-sm">
+                          {x.icon}
+                        </span>
+                        <span className="text-sm font-bold text-white" style={bodyStyle}>
+                          {x.label}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* BUILD JOURNEY / TIMELINE */}
         <div className="ab-reveal mt-16">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <h3 className="text-2xl font-extrabold text-[var(--text-heading)] sm:text-3xl">
-                Our Build Journey
-              </h3>
+              <h3 className="text-2xl font-extrabold text-[var(--text-heading)] sm:text-3xl">Our Build Journey</h3>
               <p className="mt-2 max-w-2xl text-[var(--text-muted)]">
                 A phased approach enables essential services first, followed by expansion into surgery, dialysis,
                 telemedicine, and training capacity.
@@ -400,8 +458,8 @@ export default function About() {
                 t.status === 'done'
                   ? 'bg-[var(--calm-soft)] text-[var(--calm)] border-[var(--calm)]/25'
                   : t.status === 'next'
-                  ? 'bg-[var(--primary-soft)] text-[var(--primary)] border-[var(--primary)]/25'
-                  : 'bg-[var(--surface-muted)] text-[var(--text-muted)] border-[var(--surface-border)]'
+                    ? 'bg-[var(--primary-soft)] text-[var(--primary)] border-[var(--primary)]/25'
+                    : 'bg-[var(--surface-muted)] text-[var(--text-muted)] border-[var(--surface-border)]'
 
               return (
                 <div key={t.phase} className={['ab-timeline-item p-7', card].join(' ')}>
@@ -430,31 +488,67 @@ export default function About() {
           </div>
         </div>
 
-        {/* OUTREACH + CTA */}
         <div className="mt-16 grid items-stretch gap-6 lg:grid-cols-12">
-          <div className={['ab-reveal p-8 lg:col-span-7', card].join(' ')}>
-            <h3 className="text-2xl font-extrabold text-[var(--text-heading)]">Community Outreach</h3>
-            <p className="mt-3 leading-relaxed text-[var(--text-body)]">
-              Our model depends on camps, early screening, and consistent follow-up, especially for disability care and rural access.
-            </p>
+          {/* Community Outreach card - heading/para top, points middle-bottom */}
+          <div
+            className={[
+              'ab-reveal relative overflow-hidden rounded-3xl p-8 shadow-[var(--shadow-soft)]',
+              'lg:col-span-7',
+              'min-h-[440px] sm:min-h-[360px]',
+              'flex flex-col',
+            ].join(' ')}
+            style={{
+              backgroundImage: "url('/about/community-outreach.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          >
+            {/* Stronger overlay for better text visibility */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/60" />
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {outreachItems.map((x) => (
-                <div
-                  key={x}
-                  className="rounded-2xl border border-[var(--surface-border)] bg-[var(--bg-page)] px-4 py-3 text-sm text-[var(--text-body)]"
-                >
-                  {x}
+            <div className="relative z-10 flex h-full flex-col">
+              {/* Heading and paragraph at top */}
+              <div>
+                <h3 className="text-2xl font-extrabold text-white" style={{ 
+                  textShadow: '0 4px 20px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 0, 0, 0.5)',
+                  fontWeight: 800,
+                  letterSpacing: '-0.015em',
+                }}>
+                  Community Outreach
+                </h3>
+
+                <p className="mt-3 text-lg leading-relaxed text-white" style={{ 
+                  textShadow: '0 2px 15px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.4)',
+                  fontWeight: 500,
+                }}>
+                  Our model depends on camps, early screening, and consistent follow-up, especially for disability care and
+                  rural access.
+                </p>
+              </div>
+              
+              {/* Points in middle to bottom */}
+              <div className="mt-auto pt-8">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {outreachItems.map((x) => (
+                    <div
+                      key={x}
+                      className="text-white/70 rounded-2xl border border-white/20 border-2 bg-rgba(251, 251, 251, 0.01) px-1 py-2 text-base font-bold text-[var(--text-heading)] backdrop-blur-[3px]"
+                    >
+                      {x}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
 
           <div className="ab-reveal lg:col-span-5 rounded-3xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] p-8 text-[var(--bg-page)] shadow-[var(--shadow-strong)]">
             <h3 className="text-2xl font-extrabold">Need help or want to support?</h3>
             <p className="mt-3 text-sm leading-relaxed text-white/85">
-              <span className="font-bold">Raghavendra Shri Sai Rural Healthcare Foundation</span>, a non-profit organization
-              with over a decade of experience in rural healthcare, committed to ethical care, accessibility, and long-term community health outcomes.
+              <span className="font-bold">Raghavendra Shri Sai Rural Healthcare Foundation</span>, a non-profit
+              organization with over a decade of experience in rural healthcare, committed to ethical care, accessibility,
+              and long-term community health outcomes.
             </p>
 
             <div className="mt-6 grid gap-3">
