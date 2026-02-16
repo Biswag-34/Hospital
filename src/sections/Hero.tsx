@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavigate } from 'react-router-dom'
+import '../styles/flipbutton.css' // ✅ add this
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -84,7 +85,9 @@ export default function Hero() {
                 communities.
               </p>
 
+              {/* ✅ CTAs (same style as Header flip button) */}
               <div className="mt-8 flex flex-wrap items-center gap-4">
+                {/* Donate (go to join-the-cause page) */}
                 <a
                   href="/join-the-cause"
                   onClick={(e) => {
@@ -92,19 +95,16 @@ export default function Hero() {
                     navigate('/join-the-cause')
                   }}
                   className={[
+                    'btn-flip md',
                     'inline-flex items-center justify-center',
-                    'rounded-full',
-                    'bg-[var(--primary)] hover:bg-[var(--primary-hover)]',
-                    'px-6 sm:px-7 py-3',
-                    'text-sm sm:text-base font-semibold text-white',
-                    'shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-strong)]',
-                    'transition active:scale-[0.98]',
-                    'focus-visible:outline-none focus-visible:shadow-[var(--ring)]',
+                    'min-w-[150px] sm:min-w-[170px]',
                   ].join(' ')}
-                >
-                  Join the Cause
-                </a>
+                  data-front="Join The Cause"
+                  data-back="Donate"
+                  aria-label="Donate"
+                />
 
+                {/* Our Projects (scroll to projects/services section) */}
                 <a
                   href="#services"
                   onClick={(e) => {
@@ -112,19 +112,14 @@ export default function Hero() {
                     window.lenis?.scrollTo('#services', { offset: -84 })
                   }}
                   className={[
-                    'inline-flex items-center justify-center',
-                    'rounded-full',
-                    'px-6 sm:px-7 py-3',
-                    'text-sm sm:text-base font-semibold',
-                    'text-white/90 hover:text-white',
-                    'bg-transparent hover:bg-[var(--primary-soft)]',
-                    'border border-white/30 hover:border-white/50',
-                    'transition',
-                    'focus-visible:outline-none focus-visible:shadow-[var(--ring)]',
-                  ].join(' ')}
-                >
-                  View Our Works
-                </a>
+                      'btn-flip md btn-flip--alt',
+                      'inline-flex items-center justify-center',
+                      'min-w-[150px] sm:min-w-[170px]',
+                    ].join(' ')}
+                  data-front="Our Works"
+                  data-back="Explore"
+                  aria-label="Our Projects"
+                />
               </div>
             </div>
           </div>

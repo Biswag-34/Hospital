@@ -10,7 +10,6 @@ import type { Swiper as SwiperType } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
 
-
 import { Link } from 'react-router-dom'
 import { HeartPulse, Sparkles, Award, Star, ArrowRight } from 'lucide-react'
 
@@ -65,6 +64,16 @@ const stories: Story[] = [
       "Suffering from continuous epilepsy that required skull surgery, Mrs. Seethamma lost her memory and couldn't recognize her family. After major surgery and dedicated care, she regained her memory and reunited with her loved ones.",
     condition: 'Continuous Epilepsy with Skull Surgery',
     image: '/beneficiaries/seethamma-1.jpeg',
+    icon: <HeartPulse className="h-5 w-5" />,
+  },
+  {
+    id: 5,
+    name: 'Dhanush',
+    title: 'A Journey from Tragedy to Hope',
+    story:
+      "Dhanush was a high school student who met with an unfortunate train accident during travel, resulting in severe foot injuries and fractures. He was first taken to a local hospital in Kolar and later referred to Bangalore for advanced treatment. After examination, doctors successfully operated with the support and care of the medical team. Now recovering well, Dhanush is pursuing his college education with renewed hope and confidence for the future.",
+    condition: 'Severe Foot Injury & Fractures from Train Accident',
+    image: '/beneficiaries/dhanush.jpg',
     icon: <HeartPulse className="h-5 w-5" />,
   },
 ]
@@ -142,6 +151,7 @@ function StoryCard({ story, index }: { story: Story; index: number }) {
       viewport={{ once: true, margin: '-60px' }}
       className="group relative h-full"
     >
+      {/* hover glow */}
       <div className="pointer-events-none absolute inset-0 rounded-[26px] opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div
           className="absolute inset-0 rounded-[26px]"
@@ -152,19 +162,13 @@ function StoryCard({ story, index }: { story: Story; index: number }) {
         />
       </div>
 
-      <div className="sc-card relative mx-auto flex h-full w-full max-w-[760px] flex-col overflow-hidden rounded-[26px] border border-black/5 bg-white/85 shadow-[var(--shadow-soft)] backdrop-blur-md">
-        <div className="relative sc-img overflow-hidden">
-          <img src={story.image} alt={story.name} loading="lazy" className="h-full w-full object-contain object-center" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-          <div className="absolute bottom-4 left-4 right-4">
-            <p className="text-[12px] font-semibold text-white/90">{story.name}</p>
-            <h3 className="mt-1 text-[18px] font-extrabold text-white drop-shadow-sm sm:text-[20px]">
-              {story.title}
-            </h3>
-          </div>
-        </div>
-
-        <div className="px-6 pb-5 pt-4 sm:px-7">
+      {/* ✅ Background image card (visible image) */}
+      <div
+        className="sc-card relative mx-auto flex h-full w-full max-w-[860px] overflow-hidden rounded-[26px] border border-black/5 shadow-[var(--shadow-soft)]"
+        style={{ backgroundImage: `url(${story.image})` }}
+      >
+        <div className="sc-content relative z-10 flex w-full flex-col px-6 pb-6 pt-6 sm:px-7 sm:pb-7 sm:pt-7">
+          {/* Top line */}
           <div className="flex flex-wrap items-center gap-3">
             <div
               className="inline-flex h-11 w-11 items-center justify-center rounded-2xl shadow-[var(--shadow-soft)]"
@@ -174,21 +178,30 @@ function StoryCard({ story, index }: { story: Story; index: number }) {
               {story.icon}
             </div>
 
-            <span className="inline-flex items-center rounded-full border border-black/5 bg-white/85 px-4 py-1.5 text-[12px] font-semibold text-[var(--text-muted)] backdrop-blur-md">
+            <span className="inline-flex items-center rounded-full border border-white/35 bg-white/20 px-4 py-1.5 text-[12px] font-semibold text-white backdrop-blur-sm">
               {story.condition}
             </span>
           </div>
 
-          <p className="mt-3 text-[14.5px] leading-relaxed text-[var(--text-body)]">{story.story}</p>
+          {/* Title */}
+          <div className="mt-5">
+            <p className="text-[12px] font-semibold text-white/90">{story.name}</p>
+            <h3 className="mt-1 text-[18px] font-extrabold text-white sm:text-[22px]">
+              {story.title}
+            </h3>
+          </div>
 
-          <div
-            className="mt-4 h-[2px] w-full"
-            style={{ background: 'linear-gradient(90deg, transparent, var(--primary-soft), transparent)' }}
-          />
+          {/* Story */}
+          <p className="mt-4 max-w-[72ch] text-[14.5px] leading-relaxed text-white/90">
+            {story.story}
+          </p>
 
+          <div className="mt-5 h-[2px] w-full bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+
+          {/* CTA */}
           <Link
             to="/join-the-cause"
-            className="sc-donate-strip mt-4 flex items-center justify-between gap-3 rounded-2xl px-5 py-3.5"
+            className="sc-donate-strip mt-5 flex items-center justify-between gap-3 rounded-2xl px-5 py-3.5"
             aria-label="Donate Now"
             onClick={(e) => e.stopPropagation()}
           >
@@ -208,12 +221,13 @@ function StoryCard({ story, index }: { story: Story; index: number }) {
           </Link>
         </div>
 
+        {/* optional glows */}
         <div
-          className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full blur-3xl opacity-55"
+          className="pointer-events-none absolute -right-8 -top-8 z-0 h-28 w-28 rounded-full blur-3xl opacity-45"
           style={{ background: 'var(--primary-soft)' }}
         />
         <div
-          className="pointer-events-none absolute -bottom-10 -left-10 h-32 w-32 rounded-full blur-3xl opacity-45"
+          className="pointer-events-none absolute -bottom-10 -left-10 z-0 h-32 w-32 rounded-full blur-3xl opacity-35"
           style={{ background: 'var(--calm-soft)' }}
         />
       </div>
@@ -265,13 +279,11 @@ export default function Testimonials() {
     return () => ctx.revert()
   }, [])
 
-  // ✅ side-click behavior (prev/next) + loop-safe index
   const handleSwiperClick = (sw: SwiperType) => {
     const clickedSlide = sw.clickedSlide as HTMLElement | undefined
     if (!clickedSlide) return
     if (clickedSlide.classList.contains('swiper-slide-active')) return
 
-    // Prefer strict prev/next behavior (your requirement)
     if (clickedSlide.classList.contains('swiper-slide-prev')) {
       sw.slidePrev()
       return
@@ -281,7 +293,6 @@ export default function Testimonials() {
       return
     }
 
-    // Fallback (if Swiper doesn't mark it prev/next due to multiple visible slides)
     const real = Number(clickedSlide.getAttribute('data-swiper-slide-index'))
     if (Number.isFinite(real)) sw.slideToLoop(real, 900)
   }
@@ -325,9 +336,6 @@ export default function Testimonials() {
         <Swiper
           onSwiper={(sw) => {
             swiperRef.current = sw
-
-            // ✅ FIX #1: force first story (index 0) to be main on load (loop-safe)
-            // Use requestAnimationFrame so Swiper finishes loop cloning first.
             requestAnimationFrame(() => {
               sw.slideToLoop(0, 0)
               sw.update()
@@ -343,7 +351,6 @@ export default function Testimonials() {
             modifier: 1.15,
             slideShadows: false,
           }}
-          // ✅ FIX #3: consistent drag physics + always drag from the “current experience”
           touchEventsTarget="container"
           grabCursor
           simulateTouch
@@ -357,7 +364,7 @@ export default function Testimonials() {
           resistanceRatio={0.7}
           slidesPerGroup={1}
           centeredSlides
-          slideToClickedSlide={false} // we handle click ourselves (prev/next behavior)
+          slideToClickedSlide={false}
           loop
           speed={900}
           autoplay={{ delay: 6000, pauseOnMouseEnter: true, disableOnInteraction: false }}
@@ -405,12 +412,8 @@ export default function Testimonials() {
         .story-swiper .swiper,
         .story-swiper .swiper-wrapper,
         .story-swiper .swiper-slide { overflow: visible !important; }
-        .story-swiper .swiper-slide { height: auto !important; }
+        .story-swiper .swiper-slide { height: auto !important; cursor: pointer; }
 
-        /* Never transform swiper-slide itself */
-        .story-swiper .swiper-slide { cursor: pointer; }
-
-        /* Visual effects on inner wrapper */
         .sc-slide-inner{
           transition: opacity 520ms ease, filter 520ms ease, transform 520ms ease;
           will-change: transform, opacity, filter;
@@ -468,12 +471,36 @@ export default function Testimonials() {
           opacity: 0.92;
         }
 
-        .sc-img { height: 220px; }
-        @media (min-width: 520px) { .sc-img { height: 240px; } }
-        @media (min-width: 900px) { .sc-img { height: 250px; } }
-        @media (min-width: 1380px) { .sc-img { height: 260px; } }
+        /* ✅ Real visible background image */
+        .sc-card{
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 416px; /* 20% smaller */
+  position: relative;
+  background-color: #000;
+}
 
-        .sc-card { max-height: min(760px, calc(100vh - 120px)); }
+        /* ✅ Light overlay so image stays visible */
+        .sc-card::after{
+          content:"";
+          position:absolute;
+          inset:0;
+          background:
+            linear-gradient(
+              180deg,
+              rgba(0,0,0,0.18) 0%,
+              rgba(0,0,0,0.28) 40%,
+              rgba(0,0,0,0.62) 100%
+            );
+          pointer-events:none;
+        }
+
+        .sc-content{ position: relative; z-index: 2; }
+
+        @media (max-width: 640px){
+          .sc-card{ min-height: 448px; }
+        }
 
         .sc-donate-strip { background: var(--primary); text-decoration: none; }
         .sc-donate-strip:hover { filter: brightness(1.03); }

@@ -1,37 +1,25 @@
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useEffect, useRef } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Twitter,
+  HeartHandshake,
   Phone,
   Mail,
   MapPin,
   Clock,
-  Ambulance,
-  Stethoscope,
-} from 'lucide-react'
+  Facebook,
+  Instagram,
+  Linkedin,
+  ArrowRight,
+} from "lucide-react"
 
 gsap.registerPlugin(ScrollTrigger)
 
 const quickLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Doctors', href: '#doctors' },
-  { label: 'Testimonials', href: '#testimonials' },
-  { label: 'Contact', href: '#contact' },
-]
-
-const departments = [
-  'Cardiology',
-  'Neurology',
-  'Pediatrics',
-  'Orthopedics',
-  'Diagnostics',
-  'Emergency Care',
+  { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Join The Cause", href: "/join-the-cause" },
+  { label: "Contact", href: "#contact" },
 ]
 
 export default function Footer() {
@@ -41,25 +29,46 @@ export default function Footer() {
     if (!footerRef.current) return
 
     const ctx = gsap.context(() => {
-      const cols = gsap.utils.toArray<HTMLElement>('.ft-col')
-      const bottom = footerRef.current?.querySelector('.ft-bottom')
+      const q = gsap.utils.selector(footerRef)
+      const cols = q(".ft-col")
+      const donate = q(".ft-donate")[0]
+      const bottom = q(".ft-bottom")[0]
 
       gsap.fromTo(
         cols,
-        { y: 24, opacity: 0 },
+        { y: 22, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           duration: 0.85,
-          ease: 'power3.out',
+          ease: "power3.out",
           stagger: 0.12,
           scrollTrigger: {
             trigger: footerRef.current,
-            start: 'top 88%',
-            toggleActions: 'play none none none',
+            start: "top 88%",
+            toggleActions: "play none none none",
           },
         }
       )
+
+      if (donate) {
+        gsap.fromTo(
+          donate,
+          { y: 18, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+            delay: 0.05,
+            scrollTrigger: {
+              trigger: footerRef.current,
+              start: "top 88%",
+              toggleActions: "play none none none",
+            },
+          }
+        )
+      }
 
       if (bottom) {
         gsap.fromTo(
@@ -68,12 +77,12 @@ export default function Footer() {
           {
             y: 0,
             opacity: 1,
-            duration: 0.7,
-            ease: 'power3.out',
+            duration: 0.75,
+            ease: "power3.out",
             scrollTrigger: {
               trigger: footerRef.current,
-              start: 'top 88%',
-              toggleActions: 'play none none none',
+              start: "top 88%",
+              toggleActions: "play none none none",
             },
           }
         )
@@ -88,164 +97,153 @@ export default function Footer() {
       ref={footerRef}
       className="relative overflow-hidden"
       style={{
-        backgroundColor: 'var(--bg-dark)',
-        color: 'rgba(239,230,220,0.78)', // warm parchment text (not white)
+        background: "var(--bg-dark)",
+        color: "rgba(239,230,220,0.78)",
       }}
     >
-      {/* Accent line (theme-driven) */}
+      {/* Accent line */}
       <div
         className="h-[2px] w-full"
         style={{
           background:
-            'linear-gradient(90deg, transparent, rgba(111,51,64,0.70), transparent)',
+            "linear-gradient(90deg, transparent, rgba(111,51,64,0.75), transparent)",
         }}
       />
 
-      {/* Background ornaments */}
+      {/* Subtle background glow (keep minimal) */}
       <div className="pointer-events-none absolute inset-0">
-        {/* Soft glows — maroon based */}
         <div
-          className="absolute -top-24 left-1/3 h-[360px] w-[360px] rounded-full blur-3xl opacity-45"
-          style={{ background: 'rgba(111, 51, 64, 0.26)' }}
+          className="absolute -top-24 left-1/3 h-[320px] w-[320px] rounded-full blur-3xl opacity-40"
+          style={{ background: "rgba(111, 51, 64, 0.22)" }}
         />
         <div
-          className="absolute -bottom-28 right-1/4 h-[380px] w-[380px] rounded-full blur-3xl opacity-35"
-          style={{ background: 'rgba(135, 81, 93, 0.22)' }}
+          className="absolute -bottom-28 right-1/4 h-[360px] w-[360px] rounded-full blur-3xl opacity-30"
+          style={{ background: "rgba(135, 81, 93, 0.18)" }}
         />
-
-        {/* Line art */}
-        <svg
-          className="absolute -left-24 -top-16 h-[360px] w-[360px] opacity-[0.16]"
-          viewBox="0 0 320 320"
-          fill="none"
-          aria-hidden="true"
-        >
-          <circle cx="160" cy="160" r="118" stroke="var(--secondary)" strokeWidth="2.6" opacity="0.55" />
-          <circle cx="160" cy="160" r="82" stroke="var(--primary)" strokeWidth="3.0" opacity="0.55" strokeDasharray="9 8" />
-          <path d="M70 200C95 235 225 235 250 200" stroke="var(--primary)" strokeWidth="3.0" opacity="0.5" />
-          {Array.from({ length: 8 }).map((_, i) => {
-            const x = 92 + i * 18
-            return (
-              <path key={`v-${i}`} d={`M${x} 95V225`} stroke="var(--secondary)" strokeWidth="1.4" opacity="0.12" />
-            )
-          })}
-          {Array.from({ length: 8 }).map((_, i) => {
-            const y = 95 + i * 18
-            return (
-              <path key={`h-${i}`} d={`M95 ${y}H225`} stroke="var(--primary)" strokeWidth="1.4" opacity="0.10" />
-            )
-          })}
-        </svg>
-
-        <svg
-          className="absolute -right-24 -bottom-20 h-[420px] w-[420px] opacity-[0.14]"
-          viewBox="0 0 380 380"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path d="M60 220C120 120 260 120 320 220" stroke="var(--secondary)" strokeWidth="3.0" opacity="0.45" />
-          <path d="M80 260C140 180 240 180 300 260" stroke="var(--primary)" strokeWidth="3.2" opacity="0.45" />
-          <circle cx="190" cy="210" r="120" stroke="var(--primary)" strokeWidth="2.6" opacity="0.30" />
-        </svg>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-20">
-        <div className="grid gap-10 sm:gap-12 md:grid-cols-2 lg:grid-cols-12">
-          {/* Brand / About */}
-          <div className="ft-col lg:col-span-4">
-            <div className="flex items-center gap-3">
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+        {/* Donation highlight strip */}
+        <div
+          className="ft-donate rounded-3xl border p-5 sm:p-6 lg:p-7"
+          style={{
+            borderColor: "rgba(255,255,255,0.10)",
+            background: "rgba(255,255,255,0.05)",
+            backdropFilter: "blur(10px)",
+            boxShadow: "var(--shadow-soft)",
+          }}
+        >
+          <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div className="flex gap-3">
               <div
-                className="h-11 w-11 rounded-2xl grid place-items-center border"
+                className="h-11 w-11 rounded-2xl grid place-items-center border shrink-0"
                 style={{
-                  background: 'rgba(255,255,255,0.06)',
-                  borderColor: 'rgba(255,255,255,0.10)',
+                  background: "rgba(255,255,255,0.06)",
+                  borderColor: "rgba(255,255,255,0.10)",
                 }}
               >
-                <Stethoscope size={18} style={{ color: 'rgba(239,230,220,0.92)' }} />
+                <HeartHandshake size={18} style={{ color: "var(--primary)" }} />
               </div>
 
               <div>
-                <h3 className="text-2xl font-extrabold tracking-tight" style={{ color: 'rgba(239,230,220,0.95)' }}>
-                  Antharaganga Hospital
-                  <span style={{ color: 'var(--primary)' }}>.</span>
+                <p
+                  className="text-xs font-semibold tracking-wide"
+                  style={{ color: "rgba(239,230,220,0.62)" }}
+                >
+                  SUPPORT RURAL HEALTHCARE
+                </p>
+                <h3
+                  className="mt-1 text-lg sm:text-xl font-extrabold tracking-tight"
+                  style={{ color: "rgba(239,230,220,0.95)" }}
+                >
+                  Your donation helps deliver care to the last mile.
                 </h3>
-                <p className="text-xs" style={{ color: 'rgba(239,230,220,0.60)' }}>
-                  Charitable Rural Hospital
+                <p
+                  className="mt-2 text-sm leading-relaxed"
+                  style={{ color: "rgba(239,230,220,0.72)" }}
+                >
+                  We prioritize rural communities, disability care, and continuity of treatment—
+                  so no one is denied support due to distance or financial barriers.
                 </p>
               </div>
             </div>
 
-            <p className="mt-5 text-sm leading-relaxed" style={{ color: 'rgba(239,230,220,0.72)' }}>
-              Compassionate, affordable care with modern diagnostics and a patient-first approach.
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:justify-self-end">
+              <a
+                href="/join-the-cause"
+                className="group inline-flex items-center justify-center rounded-full px-5 py-3 font-semibold transition active:scale-[0.98]"
+                style={{
+                  background: "var(--primary)",
+                  color: "var(--bg-page)",
+                  boxShadow: "var(--shadow-soft)",
+                }}
+              >
+                Donate / Join The Cause
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </a>
+
+              <a
+                href="#contact"
+                className="inline-flex items-center justify-center rounded-full px-5 py-3 font-semibold border transition hover:opacity-100 active:scale-[0.98]"
+                style={{
+                  borderColor: "rgba(255,255,255,0.14)",
+                  background: "rgba(255,255,255,0.06)",
+                  color: "rgba(239,230,220,0.92)",
+                  opacity: 0.95,
+                }}
+              >
+                Volunteer / Partner
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Main footer grid (trimmed, structured) */}
+        <div className="mt-10 grid gap-10 md:grid-cols-3">
+          {/* Brand */}
+          <div className="ft-col">
+            <h4
+              className="text-xl font-extrabold tracking-tight"
+              style={{ color: "rgba(239,230,220,0.95)" }}
+            >
+              Antharaganga Hospital<span style={{ color: "var(--primary)" }}>.</span>
+            </h4>
+
+            <p
+              className="mt-3 text-sm leading-relaxed"
+              style={{ color: "rgba(239,230,220,0.72)" }}
+            >
+              A charitable rural hospital focused on long-term community impact—rural-first,
+              disability-first, community-first.
             </p>
 
-            {/* CTA chips */}
-            <div className="mt-6 grid gap-3">
-              <div
-                className="rounded-2xl px-4 py-3 flex items-start gap-3 border"
-                style={{
-                  background: 'rgba(255,255,255,0.06)',
-                  borderColor: 'rgba(255,255,255,0.10)',
-                }}
-              >
-                <Ambulance className="mt-0.5" size={18} style={{ color: 'var(--primary)' }} />
-                <div>
-                  <p className="text-sm font-semibold" style={{ color: 'rgba(239,230,220,0.92)' }}>
-                    24/7 Emergency
-                  </p>
-                  <p className="text-xs" style={{ color: 'rgba(239,230,220,0.62)' }}>
-                    Rapid response and critical support
-                  </p>
-                </div>
-              </div>
-
-              <div
-                className="rounded-2xl px-4 py-3 flex items-start gap-3 border"
-                style={{
-                  background: 'rgba(255,255,255,0.06)',
-                  borderColor: 'rgba(255,255,255,0.10)',
-                }}
-              >
-                <Clock className="mt-0.5" size={18} style={{ color: 'var(--secondary)' }} />
-                <div>
-                  <p className="text-sm font-semibold" style={{ color: 'rgba(239,230,220,0.92)' }}>
-                    OPD Hours
-                  </p>
-                  <p className="text-xs" style={{ color: 'rgba(239,230,220,0.62)' }}>
-                    Mon–Sat: 9:00 AM – 8:00 PM
-                  </p>
-                </div>
-              </div>
-            </div>
-
             {/* Social */}
-            <div className="mt-6 flex gap-3">
+            <div className="mt-5 flex gap-3">
               {[
-                { label: 'Facebook', Icon: Facebook },
-                { label: 'Instagram', Icon: Instagram },
-                { label: 'Twitter', Icon: Twitter },
-                { label: 'LinkedIn', Icon: Linkedin },
-              ].map(({ label, Icon }) => (
+                { label: "Facebook", Icon: Facebook, href: "#" },
+                { label: "Instagram", Icon: Instagram, href: "#" },
+                { label: "LinkedIn", Icon: Linkedin, href: "#" },
+              ].map(({ label, Icon, href }) => (
                 <a
                   key={label}
-                  href="#"
+                  href={href}
                   aria-label={label}
-                  className="h-10 w-10 rounded-full grid place-items-center transition hover:translate-y-[-1px]"
+                  className="h-10 w-10 rounded-full grid place-items-center transition hover:-translate-y-[1px]"
                   style={{
-                    background: 'rgba(255,255,255,0.06)',
-                    border: '1px solid rgba(255,255,255,0.10)',
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.10)",
                   }}
                 >
-                  <Icon size={18} style={{ color: 'rgba(239,230,220,0.86)' }} />
+                  <Icon size={18} style={{ color: "rgba(239,230,220,0.86)" }} />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="ft-col lg:col-span-3">
-            <h4 className="text-lg font-semibold mb-5" style={{ color: 'rgba(239,230,220,0.92)' }}>
-              Quick Links
+          {/* Links */}
+          <div className="ft-col">
+            <h4 className="text-lg font-semibold mb-4" style={{ color: "rgba(239,230,220,0.92)" }}>
+              Links
             </h4>
 
             <ul className="space-y-3 text-sm">
@@ -254,11 +252,11 @@ export default function Footer() {
                   <a
                     href={link.href}
                     className="group inline-flex items-center gap-2 transition hover:opacity-100"
-                    style={{ color: 'rgba(239,230,220,0.72)' }}
+                    style={{ color: "rgba(239,230,220,0.72)" }}
                   >
                     <span
                       className="h-1.5 w-1.5 rounded-full transition"
-                      style={{ backgroundColor: 'rgba(111,51,64,0.78)' }}
+                      style={{ backgroundColor: "rgba(111,51,64,0.78)" }}
                     />
                     <span className="group-hover:opacity-100" style={{ opacity: 0.92 }}>
                       {link.label}
@@ -267,67 +265,59 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
 
-          {/* Departments */}
-          <div className="ft-col lg:col-span-3">
-            <h4 className="text-lg font-semibold mb-5" style={{ color: 'rgba(239,230,220,0.92)' }}>
-              Departments
-            </h4>
-
-            <ul className="grid grid-cols-2 gap-y-3 text-sm">
-              {departments.map((d) => (
-                <li key={d} style={{ color: 'rgba(239,230,220,0.72)' }}>
-                  {d}
-                </li>
-              ))}
-            </ul>
-
-            <p className="mt-5 text-xs" style={{ color: 'rgba(239,230,220,0.56)' }}>
-              Comprehensive specialties with essential diagnostics and emergency readiness.
+            <p className="mt-6 text-xs" style={{ color: "rgba(239,230,220,0.56)" }}>
+              Transparency and community trust are central to our work.
             </p>
           </div>
 
-          {/* Contact */}
-          <div className="ft-col lg:col-span-2">
-            <h4 className="text-lg font-semibold mb-5" style={{ color: 'rgba(239,230,220,0.92)' }}>
+          {/* Contact (clean + real fields only) */}
+          <div className="ft-col">
+            <h4 className="text-lg font-semibold mb-4" style={{ color: "rgba(239,230,220,0.92)" }}>
               Contact
             </h4>
 
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
-                <MapPin size={18} className="mt-1" style={{ color: 'var(--primary)' }} />
-                <span style={{ color: 'rgba(239,230,220,0.72)' }}>
-                  123 Healthcare Avenue,<br />
-                  Wellness City, India
+                <MapPin size={18} className="mt-1" style={{ color: "var(--primary)" }} />
+                <span style={{ color: "rgba(239,230,220,0.72)" }}>
+                  {/* Replace with your real address */}
+                  Rural Campus, Antharaganga Region,<br />
+                  Karnataka, India
                 </span>
               </li>
 
               <li className="flex items-center gap-3">
-                <Phone size={18} style={{ color: 'var(--primary)' }} />
-                <span style={{ color: 'rgba(239,230,220,0.72)' }}>+91 98765 43210</span>
+                <Phone size={18} style={{ color: "var(--primary)" }} />
+                <a
+                  href="tel:+919876543210"
+                  style={{ color: "rgba(239,230,220,0.72)" }}
+                  className="hover:opacity-100 transition"
+                >
+                  +91 98765 43210
+                </a>
               </li>
 
               <li className="flex items-center gap-3">
-                <Mail size={18} style={{ color: 'var(--primary)' }} />
-                <span style={{ color: 'rgba(239,230,220,0.72)' }}>contact@qlinique.com</span>
+                <Mail size={18} style={{ color: "var(--primary)" }} />
+                <a
+                  href="mailto:contact@antharaganga.org"
+                  style={{ color: "rgba(239,230,220,0.72)" }}
+                  className="hover:opacity-100 transition"
+                >
+                  contact@antharaganga.org
+                </a>
+              </li>
+
+              <li className="flex items-center gap-3">
+                <Clock size={18} style={{ color: "var(--secondary)" }} />
+                <span style={{ color: "rgba(239,230,220,0.72)" }}>
+                  OPD: Mon–Sat • 9:00 AM – 8:00 PM
+                </span>
               </li>
             </ul>
 
-            {/* CTA */}
-            <a
-              href="/join-the-cause"
-              className="mt-6 inline-flex w-full justify-center rounded-full px-2 py-3 font-semibold shadow-sm transition active:scale-[0.98]"
-              style={{
-                backgroundColor: 'var(--primary)',
-                color: 'var(--bg-page)',
-                boxShadow: 'var(--shadow-soft)',
-              }}
-            >
-              Join The Cause
-            </a>
-
-            <p className="mt-3 text-xs" style={{ color: 'rgba(239,230,220,0.55)' }}>
+            <p className="mt-5 text-xs" style={{ color: "rgba(239,230,220,0.55)" }}>
               For emergencies, call immediately. For general enquiries, use the contact form.
             </p>
           </div>
@@ -335,19 +325,19 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div
-          className="ft-bottom mt-10 sm:mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.10)' }}
+          className="ft-bottom mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.10)" }}
         >
-          <span style={{ color: 'rgba(239,230,220,0.60)' }}>
+          <span style={{ color: "rgba(239,230,220,0.60)" }}>
             © {new Date().getFullYear()} Antharaganga Hospital. All rights reserved.
           </span>
 
-          <div className="flex gap-6" style={{ color: 'rgba(239,230,220,0.60)' }}>
+          <div className="flex gap-6" style={{ color: "rgba(239,230,220,0.60)" }}>
             <a href="#" className="hover:opacity-100 transition" style={{ opacity: 0.9 }}>
-              Privacy Policy
+              Privacy
             </a>
             <a href="#" className="hover:opacity-100 transition" style={{ opacity: 0.9 }}>
-              Terms of Service
+              Terms
             </a>
           </div>
         </div>

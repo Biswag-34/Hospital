@@ -1,131 +1,143 @@
 // components/join-cause/JoinCausePage.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import JoinCauseHero from "./JoinCauseHero";
-import HighlightProjects from "./HighlightProjects";
-import ProjectGrid from "./ProjectGrid";
-import StickyProjectBar from "./StickyProjectBar";
-import { projects } from "./data";
-import type { ProjectStatus } from "./data";
+import StickyProjectBar, { type Filter } from "./StickyProjectBar";
+import ProjectMiniCard from "./ProjectMiniCard";
+import ProjectDetailCard from "./ProjectDetailCard"; // adjust if your file name differs
+import { projects, allProjectTags } from "./data";
 
 export default function JoinCausePage() {
-  const [status, setStatus] = useState<ProjectStatus>("ongoing");
+  const [filter, setFilter] = useState<Filter>("all");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedId, setSelectedId] = useState<string>(projects[0]?.id || "");
 
-  const handleJoin = (projectId: string) => {
-    console.log("Join cause for:", projectId);
-  };
-
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  const detailRef = useRef<HTMLDivElement | null>(null);
 
   const counts = useMemo(() => {
-    return {
-      ongoing: projects.filter((p) => p.status === "ongoing").length,
-      upcoming: projects.filter((p) => p.status === "upcoming").length,
-    };
-  }, [projects]);
+    const all = projects.length;
+    const urgent = projects.filter((p) => p.urgent).length;
+    const ongoing = projects.filter((p) => p.status === "ongoing").length;
+    const upcoming = projects.filter((p) => p.status === "upcoming").length;
+    return { all, urgent, ongoing, upcoming };
+  }, []);
 
-  const filteredProjects = useMemo(() => {
-    return projects.filter((p) => p.status === status);
-  }, [status]);
+  const filtered = useMemo(() => {
+    let list = [...projects];
 
-  const highlighted = useMemo(() => {
-    const sameTabFeatured = projects.filter((p) => p.status === status && p.featured);
-    if (sameTabFeatured.length >= 1) return sameTabFeatured;
+    if (filter === "urgent") list = list.filter((p) => p.urgent);
+    if (filter === "ongoing") list = list.filter((p) => p.status === "ongoing");
+    if (filter === "upcoming") list = list.filter((p) => p.status === "upcoming");
 
-    const urgentSameTab = projects.filter((p) => p.status === status && p.urgent);
-    if (urgentSameTab.length >= 1) return urgentSameTab;
+    if (selectedTags.length) {
+      // OR match (a project appears if it contains any selected tag)
+      list = list.filter((p) => selectedTags.some((t) => p.tags.includes(t)));
+    }
 
-    return projects.filter((p) => p.featured).slice(0, 2);
-  }, [status]);
+    return list;
+  }, [filter, selectedTags]);
+
+  const selectedProject = useMemo(() => {
+    return projects.find((p) => p.id === selectedId) || filtered[0] || projects[0];
+  }, [selectedId, filtered]);
+
+  function onSelectProject(id: string) {
+    setSelectedId(id);
+    // smooth scroll to detail view
+    setTimeout(() => {
+      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 0);
+  }
+
+  function toggleTag(tag: string) {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((x) => x !== tag) : [...prev, tag]
+    );
+  }
+
+  function clearTags() {
+    setSelectedTags([]);
+  }
 
   return (
-    <main className="min-h-screen bg-[var(--bg-page)] text-[var(--text-body)]">
+    <main className="bg-[var(--bg-page)]">
       <JoinCauseHero
-        onPrimaryClick={() => scrollTo("projects")}
-        onSecondaryClick={() => scrollTo("contact")}
+        onPrimaryClick={() => {
+          // scroll to grid
+          const el = document.getElementById("projects-grid");
+          el?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }}
+        onSecondaryClick={() => {
+          // you can open your contact modal here
+          const el = document.getElementById("projects-grid");
+          el?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }}
       />
 
-      {/* Sticky Tabs Bar */}
-      <StickyProjectBar value={status} onChange={setStatus} counts={counts} />
-
-      <HighlightProjects projects={highlighted} onJoin={handleJoin} />
-
-      <div id="projects" className="mx-auto max-w-6xl px-4">
-        <div className="h-px w-full bg-[var(--surface-border)]" />
-      </div>
-
-      <ProjectGrid
-        title={status === "ongoing" ? "Ongoing Projects" : "Upcoming Projects"}
-        subtitle={
-          status === "ongoing"
-            ? "Projects currently running — support the impact in real time."
-            : "Planned initiatives — help us prepare resources and execute faster."
-        }
-        projects={filteredProjects}
-        onJoin={handleJoin}
+      <StickyProjectBar
+        value={filter}
+        onChange={setFilter}
+        counts={counts}
+        tags={allProjectTags}
+        selectedTags={selectedTags}
+        onToggleTag={toggleTag}
+        onClearTags={clearTags}
       />
 
-      {/* Final Contact CTA */}
-      <section id="contact" className="mx-auto max-w-6xl px-4 pb-16">
-        <div
-          className={[
-            "relative overflow-hidden rounded-3xl border border-[var(--surface-border)]",
-            "bg-[var(--bg-dark)] p-8 sm:p-10",
-            "text-[var(--bg-page)]",
-            "shadow-[var(--shadow-strong)]",
-          ].join(" ")}
-        >
-          {/* Token-based soft glow (no hardcoded RGBA) */}
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_top,var(--primary-soft),transparent_58%)]" />
-            <div className="absolute -right-28 -top-28 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
-            <div className="absolute -left-28 -bottom-28 h-80 w-80 rounded-full bg-white/10 blur-3xl" />
+      {/* ✅ ONE section: grid */}
+      <section id="projects-grid" className="mx-auto max-w-6xl px-4 py-10">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h3 className="text-lg sm:text-xl font-extrabold tracking-tight text-[var(--text-heading)]">
+              Projects
+            </h3>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
+              All projects in one place — filter by status & tags.
+            </p>
           </div>
 
-          <div className="relative z-10 max-w-2xl">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Want to partner, sponsor, or volunteer?
-            </h2>
-
-            <p className="mt-3 text-[var(--bg-page)]/80 leading-relaxed">
-              Reach out and our team will guide you — donations, volunteering, CSR partnerships, or equipment support.
-            </p>
-
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="/contact"
-                className={[
-                  "inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold",
-                  "bg-[var(--bg-page)] text-[var(--primary)]",
-                  "shadow-[var(--shadow-soft)] transition hover:opacity-90 active:scale-[0.98]",
-                  "focus:outline-none focus-visible:shadow-[var(--ring)]",
-                ].join(" ")}
-              >
-                Contact Us
-              </a>
-
-              <a
-                href="tel:+910000000000"
-                className={[
-                  "inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold",
-                  "border border-white/20 bg-white/10 text-[var(--bg-page)]",
-                  "transition hover:bg-white/15 active:scale-[0.98]",
-                  "focus:outline-none focus-visible:shadow-[var(--ring)]",
-                ].join(" ")}
-              >
-                Call Now
-              </a>
-            </div>
-
-            <div className="mt-6 text-sm text-[var(--bg-page)]/70">
-              Email: support@yourhospital.com • Address: Your City, India
-            </div>
+          <div className="text-xs text-[var(--text-muted)]">
+            Showing <span className="font-semibold text-[var(--text-heading)]">{filtered.length}</span>{" "}
+            of <span className="font-semibold text-[var(--text-heading)]">{projects.length}</span>
           </div>
         </div>
+
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((p) => (
+            <ProjectMiniCard
+              key={p.id}
+              project={p}
+              selected={p.id === selectedProject?.id}
+              onSelect={onSelectProject}
+            />
+          ))}
+        </div>
+
+        {/* Empty state */}
+        {filtered.length === 0 && (
+          <div className="mt-8 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] p-6 text-sm text-[var(--text-muted)]">
+            No projects match this filter. Try changing status or clearing tags.
+          </div>
+        )}
       </section>
+
+      {/* ✅ Details (single strip handled inside ProjectDetailCard) */}
+      <div ref={detailRef}>
+        {selectedProject ? (
+          <ProjectDetailCard
+            project={selectedProject}
+            onBack={() => {
+              const el = document.getElementById("projects-grid");
+              el?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            onDonate={(id) => {
+              // hook your donation modal here
+              console.log("Donate:", id);
+            }}
+          />
+        ) : null}
+      </div>
     </main>
   );
 }

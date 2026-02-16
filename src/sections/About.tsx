@@ -32,7 +32,7 @@ const keyBadges = [
   },
   {
     icon: <Accessibility size={20} className="text-[var(--text-on-image)]" />,
-    title: 'Free Check-ups for Disabled People',
+    title: 'Free Treatment for Disabled People',
     desc: 'Priority, dignity-first clinical support and structured disability care.',
     bg: '/about/d.JPG',
     pos: 'top' as const,
@@ -67,15 +67,15 @@ const pillars = [
 const clinicalFoundation = [
   { icon: <Stethoscope size={22} className="text-[var(--calm)]" />, label: 'Outpatient (OPD) and inpatient (IPD) services' },
   { icon: <Syringe size={22} className="text-[var(--calm)]" />, label: 'Wound care and limb salvage programs' },
-  { icon: <ShieldPlus size={22} className="text-[var(--calm)]" />, label: 'Preventive health check-ups' },
+  { icon: <ShieldPlus size={22} className="text-[var(--calm)]" />, label: 'Chronic disease management' },
   { icon: <Microscope size={22} className="text-[var(--calm)]" />, label: 'Mother and child health services' },
 ]
 
 const disabilityCore = [
   { icon: <Brain size={22} className="text-[var(--primary)]" />, label: 'Mental health services, including counseling and community psychiatry support' },
   { icon: <Activity size={22} className="text-[var(--primary)]" />, label: 'Disability rehabilitation and physiotherapy' },
-  { icon: <Accessibility size={22} className="text-[var(--primary)]" />, label: 'Mother and child health services' },
-  { icon: <HeartHandshake size={22} className="text-[var(--primary)]" />, label: 'Chronic disease management' },
+  { icon: <Accessibility size={22} className="text-[var(--primary)]" />, label: 'De-addiction and substance abuse treatment' },
+  { icon: <HeartHandshake size={22} className="text-[var(--primary)]" />, label: 'Caregiver training & family support programs' },
 ]
 
 const timeline = [
@@ -117,6 +117,7 @@ const outreachItems = [
   'School health screening programs',
   'Training programs for rural healthcare workers',
   'Awareness initiatives on diabetes, wound care, hygiene, and prevention',
+  'Pra-Chi- Prathama Chikitse',
 ]
 
 export default function About() {
@@ -349,10 +350,11 @@ export default function About() {
               {[
                 'A First-of-Its-Kind Rural Healthcare Model',
                 'Socially driven, non-profit healthcare institution focused on long-term community impact',
-                'Charitable and non-profit driven',
-                'Designed for rural-specific health challenges',
+                'Accessible care regardless of financial status',
+                'Built specifically for underserved and remote populations',
                 'Integrated rehabilitation and research model',
                 'Continuity of care rather than episodic treatment',
+                'Community-embedded approach with local participation',
               ].map((txt) => (
                 <div key={txt} className="rounded-2xl border border-white/12 bg-white/6 p-4">
                   <p className="text-sm font-semibold text-white/92">{txt}</p>

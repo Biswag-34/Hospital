@@ -11,11 +11,15 @@ import 'swiper/css/navigation'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const doctors: Doctor[] = [
-  { name: 'Nagaraj C V', spec: 'President RRHCF', img: '/assets/doctors/doc1.jpg' },
-  { name: 'Mahendar U S', spec: 'Vice President RRHCF', img: '/assets/doctors/doc2.jpg' },
-  { name: 'Dr Pradeep Kumar N', spec: 'EC Member RRHCF', img: '/assets/doctors/doc3.jpg' },
-  { name: 'Dr Srikanth', spec: 'Treasurer RRHCF', img: '/assets/doctors/doc4.jpg' },
-  { name: 'C V Prakash', spec: 'RRHCF', img: '/assets/doctors/doc5.jpg' },
+  { name: 'Mr. Jagadish Gokavarapu', spec: 'VP Tech. Wissen Infotech', img: '/doctor/Doc1.jpg' },
+  { name: 'Dr. Pradeep Kumar N  ', spec: 'Plastic surgeon & Founder Secretary of RRHCF', img: '/doctor/Doc7.jpg' },
+  { name: 'Dr. Venkatachala', spec: 'General Physician', img: '/doctor/Doc2.jpg' },
+  { name: 'Dr K S Shankar', spec: 'Founder secretary of AVS', img: '/doctor/Doc3.jpg' },
+  { name: 'Mr. Mahendar ', spec: 'Founder CEO of Hatti Kappi', img: '/doctor/Doc4.jpg' },
+  { name: 'Dr. Sundareshan M N  ', spec: 'Psychiatrist', img: '/doctor/Doc5.jpg' },
+  { name: 'K S Chitritha', spec: 'Public relation officer', img: '/doctor/Doc6.jpg' },
+  { name: 'Mr. Prathap  ', spec: 'Operation Manager', img: '/doctor/Doc8.jpg' },
+
 ]
 
 export default function Doctors() {

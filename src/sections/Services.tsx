@@ -216,7 +216,7 @@ function PoweredHub({
 
   // geometry (already reduced)
   const centerR = 160;
-  const nodeR = 92;
+  const nodeR = 93;
   const ringR = 300;
 
   const points = useMemo(() => {
@@ -235,12 +235,13 @@ function PoweredHub({
   const nodeT = reduceMotion ? { duration: 0 } : { duration: 0.45, ease: EASE_OUT };
 
   const clamp2: React.CSSProperties = {
-    display: "-webkit-box",
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  };
+  display: "block",
+  overflow: "visible",
+  textOverflow: "unset",
+  whiteSpace: "normal",
+  wordBreak: "break-word",
+};
+
 
   return (
     <div className="relative w-full h-full">
@@ -354,7 +355,7 @@ function PoweredHub({
                     backgroundColor: isPowered ? color : "rgba(106,46,58,0.06)",
                   }}
                   transition={nodeT}
-                  className="h-[88%] w-[88%] rounded-full grid place-items-center"
+                  className="h-[90%] w-[90%] rounded-full grid place-items-center"
                 >
                   <div className="grid place-items-center gap-2 px-3">
                     <Icon
@@ -370,12 +371,13 @@ function PoweredHub({
                       style={{
                         ...clamp2,
                         fontFamily: "var(--font-body)",
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: 800,
-                        lineHeight: 1.12,
+                        lineHeight: 1.05,
+                        maxWidth: "100%",
+                        paddingInline: 4,
                         color: isPowered ? "var(--text-on-image)" : "var(--text-body)",
                         opacity: isPowered ? 1 : 0.9,
-                        maxWidth: "92%",
                       }}
                     >
                       {s.label}

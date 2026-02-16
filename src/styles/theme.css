@@ -115,3 +115,16 @@
   --keybadge-min-h: 280px;
   --keybadge-min-h-sm: 240px;
 }
+
+:root{
+  /* extra surfaces for nicer depth */
+  --surface-2: #efe2d7;
+  --border-strong: rgba(96, 42, 54, 0.28);
+
+  /* soft highlight glow (theme based) */
+  --glow-primary: 0 22px 60px rgba(106, 46, 58, 0.16);
+  --glow-primary-soft: 0 18px 46px rgba(106, 46, 58, 0.12);
+
+  /* nicer inset highlight for cards */
+  --inset-highlight: inset 0 1px 0 rgba(255,255,255,0.55);
+}
