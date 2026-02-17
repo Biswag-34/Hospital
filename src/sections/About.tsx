@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
@@ -21,6 +22,7 @@ import {
 } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
+
 
 const keyBadges = [
   {
@@ -120,8 +122,11 @@ const outreachItems = [
   'Pra-Chi- Prathama Chikitse',
 ]
 
+
+
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!sectionRef.current) return
@@ -464,30 +469,98 @@ export default function About() {
                     : 'bg-[var(--surface-muted)] text-[var(--text-muted)] border-[var(--surface-border)]'
 
               return (
-                <div key={t.phase} className={['ab-timeline-item p-7', card].join(' ')}>
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <p className="text-xs font-semibold text-[var(--text-muted)]">{t.tag}</p>
-                      <h4 className="text-lg font-extrabold text-[var(--text-heading)]">{t.phase}</h4>
-                    </div>
+                <div
+        key={t.phase}
+        className="ab-timeline-item group [perspective:1200px]"
+      >
+        {/* Flip wrapper */}
+        <div
+          className={[
+            'relative h-full',
+            '[transform-style:preserve-3d]',
+            'transition-transform duration-700 ease-[cubic-bezier(.2,.8,.2,1)]',
+            'group-hover:[transform:rotateY(180deg)]',
+          ].join(' ')}
+        >
+          {/* FRONT */}
+          <div
+            className={[
+              'p-7',
+              card,
+              '[backface-visibility:hidden]',
+              'h-full',
+            ].join(' ')}
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold text-[var(--text-muted)]">{t.tag}</p>
+                <h4 className="text-lg font-extrabold text-[var(--text-heading)]">{t.phase}</h4>
+              </div>
 
-                    <span className={['rounded-full px-3 py-1 text-xs font-semibold border', badge].join(' ')}>
-                      {t.status === 'done' ? 'Completed' : t.status === 'next' ? 'Next' : 'Planned'}
-                    </span>
-                  </div>
+              <span className={['rounded-full px-3 py-1 text-xs font-semibold border', badge].join(' ')}>
+                {t.status === 'done' ? 'Completed' : t.status === 'next' ? 'Next' : 'Planned'}
+              </span>
+            </div>
 
-                  <ul className="mt-5 space-y-3 text-sm text-[var(--text-body)]">
-                    {t.points.map((p) => (
-                      <li key={p} className="flex gap-2">
-                        <CheckCircle2 size={16} className="mt-0.5 text-[var(--calm)]" />
-                        <span>{p}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )
-            })}
+            <ul className="mt-5 space-y-3 text-sm text-[var(--text-body)]">
+              {t.points.map((p) => (
+                <li key={p} className="flex gap-2">
+                  <CheckCircle2 size={16} className="mt-0.5 text-[var(--calm)]" />
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Optional: small hint */}
+            <div className="mt-6 text-xs font-semibold text-[var(--text-muted)]">
+              Hover to view progress →
+            </div>
           </div>
+
+          {/* BACK */}
+          <div
+            className={[
+              'absolute inset-0',
+              'p-7',
+              card,
+              '[transform:rotateY(180deg)]',
+              '[backface-visibility:hidden]',
+              'grid content-between',
+            ].join(' ')}
+          >
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                Build Progress
+              </p>
+
+              <h4 className="mt-2 text-xl font-extrabold text-[var(--text-heading)]">
+                {t.phase}
+              </h4>
+
+              <p className="mt-3 text-sm leading-relaxed text-[var(--text-body)]">
+                Explore photos, construction updates, and the floor plan in the Building page.
+              </p>
+
+              {/* Optional: show status as a pill on back too */}
+              <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[var(--surface-border)] bg-[var(--surface-muted)] px-4 py-2 text-xs font-semibold text-[var(--text-muted)]">
+                <Building2 size={14} className="text-[var(--primary)]" />
+                {t.tag}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => navigate('/build')}
+              className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--shadow-strong)] transition hover:opacity-95 active:scale-[0.98]"
+            >
+              View Progress
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  })}
+</div>
         </div>
 
         <div className="mt-16 grid items-stretch gap-6 lg:grid-cols-12">
