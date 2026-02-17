@@ -6,7 +6,7 @@ import Testimonials from '../sections/Testimonials'
 import Contact from '../sections/Contact'
 import ServicesShowcase from '../sections/Services'
 import CauseImpactSection from '../sections/Important'
-import BrandPartnersStrip from '../sections/PArtner'
+import BrandPartnersStrip from '../sections/Partner'
 
 export default function HomePage() {
   return (
