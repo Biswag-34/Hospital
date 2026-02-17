@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage'
 import JoinTheCause from './pages/JoinTheCause'
 import Build from './pages/Build'
 
+
 export default function App() {
   return (
     <MainLayout>
