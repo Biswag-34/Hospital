@@ -8,7 +8,7 @@ type Partner = {
 }
 
 const partners: Partner[] = [
-  { name: "Timken Engineering & Research India Pvt Ltd", logo: "/partners/brand1.svg", href: "#" },
+  { name: "Timken Engineering & Research India Pvt Ltd", logo: "/partners/bradn1.png", href: "#" },
   { name: "GE aerospace", logo: "/partners/brand2.svg", href: "#", needsBackdrop: true },
   { name: "Sarasraj Health assistance", logo: "/partners/brand3.png", href: "#", needsBackdrop: true },
   { name: "Hatti Kaapi pvt ltd", logo: "/partners/brand4.png", href: "#", needsBackdrop: true },
